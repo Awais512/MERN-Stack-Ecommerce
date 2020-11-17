@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LoginForm from './LoginForm';
+import LoginForm from '../../components/Login/LoginForm';
 
 const Login = ({ history }) => {
   const [loading, setLoading] = useState(false);
