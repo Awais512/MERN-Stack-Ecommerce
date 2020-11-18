@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const { connectDb } = require('./db');
 const cors = require('cors');
-const auth = require('./routes/auth');
+const fs = require('fs');
 dotenv.config();
 
 connectDb();
@@ -13,7 +13,10 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 
-app.use('/api/users', auth);
+//Routes MMiddleware
+fs.readdirSync('./routes').map((r) =>
+  app.use('/api', require('./routes/' + r))
+);
 
 const PORT = process.env.PORT;
 
