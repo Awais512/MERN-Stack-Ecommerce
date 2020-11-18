@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrUpdateUser } from '../../functions/auth';
 
-const LoginWithGoogle = ({ history, setLoading }) => {
+const LoginWithGoogle = ({ history, setLoading, roleBasedRedirect }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -33,7 +33,7 @@ const LoginWithGoogle = ({ history, setLoading }) => {
           _id: res.data._id,
         },
       });
-      history.push('/');
+      roleBasedRedirect(res);
     } catch (error) {
       console.log(error);
       toast.error(error.message);

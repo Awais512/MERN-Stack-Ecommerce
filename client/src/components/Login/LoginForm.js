@@ -38,11 +38,19 @@ const LoginForm = ({ history, setLoading }) => {
           _id: res.data._id,
         },
       });
-      history.push('/');
+      roleBasedRedirect(res);
     } catch (error) {
       console.log(error);
       toast.error(error.message);
       setLoading(false);
+    }
+  };
+
+  const roleBasedRedirect = (res) => {
+    if (res.data.role === 'admin') {
+      history.push('/admin/dashboard');
+    } else {
+      history.push('/user/history');
     }
   };
 
@@ -83,7 +91,11 @@ const LoginForm = ({ history, setLoading }) => {
           Login with Email and Password
         </Button>
 
-        <LoginWithGoogle history={history} setLoading={setLoading} />
+        <LoginWithGoogle
+          history={history}
+          setLoading={setLoading}
+          roleBasedRedirect={roleBasedRedirect}
+        />
 
         <Link to='/forgot/password' className='float-right text-danger'>
           Forgot Password
