@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const { connectDb } = require('./db');
 const cors = require('cors');
-const fs = require('fs');
+const { readdirSync } = require('fs');
 dotenv.config();
 
 connectDb();
@@ -14,9 +14,7 @@ app.use(morgan('dev'));
 app.use(cors());
 
 //Routes MMiddleware
-fs.readdirSync('./routes').map((r) =>
-  app.use('/api', require('./routes/' + r))
-);
+readdirSync('./routes').map((r) => app.use('/api', require('./routes/' + r)));
 
 const PORT = process.env.PORT;
 
