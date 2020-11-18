@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
+import { createOrUpdateUser } from '../../functions/auth';
 
 const LoginWithGoogle = ({ history, setLoading }) => {
   const dispatch = useDispatch();
@@ -20,12 +21,16 @@ const LoginWithGoogle = ({ history, setLoading }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
+      const res = await createOrUpdateUser(idTokenResult.token);
+
       dispatch({
         type: 'LOGGED_IN_USER',
         payload: {
-          name: user.displayName,
-          email: user.email,
+          name: res.data.name,
+          email: res.data.email,
           token: idTokenResult.token,
+          role: res.data.role,
+          _id: res.data._id,
         },
       });
       history.push('/');

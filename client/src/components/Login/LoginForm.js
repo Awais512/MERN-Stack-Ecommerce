@@ -6,21 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import LoginWithGoogle from './LoginWithGoogle';
-import axios from 'axios';
-
-const createOrUpdateUser = async (authtoken) => {
-  const config = {
-    headers: {
-      authtoken,
-    },
-  };
-
-  return await axios.post(
-    `${process.env.REACT_APP_API}/create-or-update-user`,
-    {},
-    config
-  );
-};
+import { createOrUpdateUser } from '../../functions/auth';
 
 const LoginForm = ({ history, setLoading }) => {
   const [email, setEmail] = useState('');
@@ -41,16 +27,18 @@ const LoginForm = ({ history, setLoading }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
       const res = await createOrUpdateUser(idTokenResult.token);
-      console.log('Create or update user response', res);
 
-      // dispatch({
-      //   type: 'LOGGED_IN_USER',
-      //   payload: {
-      //     email: user.email,
-      //     token: idTokenResult.token,
-      //   },
-      // });
-      // history.push('/');
+      dispatch({
+        type: 'LOGGED_IN_USER',
+        payload: {
+          name: res.data.name,
+          email: res.data.email,
+          token: idTokenResult.token,
+          role: res.data.role,
+          _id: res.data._id,
+        },
+      });
+      history.push('/');
     } catch (error) {
       console.log(error);
       toast.error(error.message);

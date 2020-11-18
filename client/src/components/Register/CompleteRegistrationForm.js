@@ -1,10 +1,14 @@
-import { auth } from 'firebase';
+import { auth } from '../../firebase';
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrUpdateUser } from '../../functions/auth';
 
 const CompleteRegistrationForm = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     setEmail(window.localStorage.getItem('emailForRegistration'));
@@ -12,35 +16,49 @@ const CompleteRegistrationForm = ({ history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email) {
-      toast.error('Please Enter your Email');
-      return;
-    }
-
-    if (!password) {
-      toast.error('Please enter your password');
+    // validation
+    if (!email || !password) {
+      toast.error('Email and password is required');
       return;
     }
 
     if (password.length < 6) {
-      toast.error('Password must be atleast 6 characters');
+      toast.error('Password must be at least 6 characters long');
       return;
     }
 
     try {
-      const result = await auth().signInWithEmailLink(
+      const result = await auth.signInWithEmailLink(
         email,
         window.location.href
       );
-      console.log(result);
-
+      //   console.log("RESULT", result);
       if (result.user.emailVerified) {
+        // remove user email fom local storage
         window.localStorage.removeItem('emailForRegistration');
-        let user = auth().currentUser;
+        // get user id token
+        let user = auth.currentUser;
         await user.updatePassword(password);
-        const idTokenResult = await user.getIdToken();
-        // console.log('user', user, 'token', idTokenResult);
+        const idTokenResult = await user.getIdTokenResult();
+        // redux store
+        console.log('user', user, 'idTokenResult', idTokenResult);
+
+        createOrUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch();
+
+        // redirect
         history.push('/');
       }
     } catch (error) {
@@ -48,6 +66,7 @@ const CompleteRegistrationForm = ({ history }) => {
       toast.error(error.message);
     }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
