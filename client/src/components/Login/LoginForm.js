@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
-import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
-import { auth, googleAuthProvider } from '../../firebase';
+import { MailOutlined } from '@ant-design/icons';
+import { auth } from '../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import LoginWithGoogle from './LoginWithGoogle';
+import axios from 'axios';
+
+const createOrUpdateUser = async (authtoken) => {
+  const config = {
+    headers: {
+      authtoken,
+    },
+  };
+
+  return await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+    {},
+    config
+  );
+};
 
 const LoginForm = ({ history, setLoading }) => {
   const [email, setEmail] = useState('');
@@ -24,39 +40,17 @@ const LoginForm = ({ history, setLoading }) => {
       const result = await auth.signInWithEmailAndPassword(email, password);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
+      const res = await createOrUpdateUser(idTokenResult.token);
+      console.log('Create or update user response', res);
 
-      dispatch({
-        type: 'LOGGED_IN_USER',
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-      history.push('/');
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const result = await auth.signInWithPopup(googleAuthProvider);
-      const { user } = result;
-      const idTokenResult = await user.getIdTokenResult();
-
-      dispatch({
-        type: 'LOGGED_IN_USER',
-        payload: {
-          name: user.displayName,
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-      history.push('/');
+      // dispatch({
+      //   type: 'LOGGED_IN_USER',
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
+      // history.push('/');
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -101,17 +95,7 @@ const LoginForm = ({ history, setLoading }) => {
           Login with Email and Password
         </Button>
 
-        <Button
-          onClick={handleGoogleLogin}
-          type='danger'
-          icon={<GoogleOutlined />}
-          block
-          shape='round'
-          className='mb-3'
-          size='large'
-        >
-          Login with Google
-        </Button>
+        <LoginWithGoogle history={history} setLoading={setLoading} />
 
         <Link to='/forgot/password' className='float-right text-danger'>
           Forgot Password
