@@ -20,3 +20,12 @@ exports.createOrUpdateUser = asyncHandler(async (req, res) => {
     res.json(newUser);
   }
 });
+
+exports.currentUser = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.user.email });
+  if (!user) {
+    return res.status(404).json({ msg: 'User not found' });
+  } else {
+    res.json(user);
+  }
+});

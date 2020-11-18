@@ -13,3 +13,17 @@ export const createOrUpdateUser = async (authtoken) => {
     config
   );
 };
+
+export const currentUser = async (authtoken) => {
+  const config = {
+    headers: {
+      authtoken,
+    },
+  };
+
+  return await axios.post(
+    `${process.env.REACT_APP_API}/current-user`,
+    {},
+    config
+  );
+};
