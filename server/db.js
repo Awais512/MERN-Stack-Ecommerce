@@ -8,6 +8,7 @@ exports.connectDb = async () => {
       useFindAndModify: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     });
     console.log('MongoDb is connected');
   } catch (error) {
