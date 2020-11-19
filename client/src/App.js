@@ -14,6 +14,8 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import { currentUser } from './functions/auth';
 import History from './pages/user/History';
 import UserRoute from './components/routes/UserRoute';
+import Password from './pages/user/Password';
+import Whishlist from './pages/user/Whishlist';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,6 +54,8 @@ const App = () => {
         <Route path='/register/complete' exact component={RegisterComplete} />
         <Route path='/forgot/password' exact component={ForgotPassword} />
         <UserRoute path='/user/history' exact component={History} />
+        <UserRoute path='/user/password' exact component={Password} />
+        <UserRoute path='/user/whishlist' exact component={Whishlist} />
       </Switch>
     </>
   );
