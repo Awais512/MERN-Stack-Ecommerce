@@ -1,5 +1,6 @@
 const admin = require('../firebase');
 const User = require('../models/userModel');
+const asyncHandler = require('express-async-handler');
 
 exports.authCheck = async (req, res, next) => {
   try {
@@ -16,13 +17,13 @@ exports.authCheck = async (req, res, next) => {
   }
 };
 
-exports.adminCheck = async (req, res, next) => {
+exports.adminCheck = asyncHandler(async (req, res, next) => {
   const { email } = req.user;
 
-  const adminUser = await (await User.findOne({ email })).exec();
+  const adminUser = await await User.findOne({ email });
   if (adminUser.role !== 'admin') {
     res.status(403).json({ err: 'You are not uthorized to view this page' });
   } else {
     next();
   }
-};
+});
