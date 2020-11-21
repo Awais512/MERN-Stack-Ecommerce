@@ -62,12 +62,8 @@ exports.updateCategory = asyncHandler(async (req, res) => {
 exports.deleteCategory = asyncHandler(async (req, res) => {
   try {
     const category = await Category.findOneAndDelete({ slug: req.params.slug });
-    if (category) {
-      res.status(204).send('Category Removed Successfully');
-    } else {
-      return res.status(404).json({ msg: 'Category does not exist' });
-    }
+    if (category) res.json(category);
   } catch (err) {
-    res.status(400).json({ err: err.message });
+    res.status(400).send('Delete Failed. Bad Request');
   }
 });

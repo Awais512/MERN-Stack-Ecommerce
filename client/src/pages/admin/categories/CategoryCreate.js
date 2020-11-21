@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CategoriesList from '../../../components/Categories/CategoriesList';
 import CategoryCreateForm from '../../../components/Categories/CategoryCreateForm';
 import AdminNav from '../../../components/nav/AdminNav';
 import { getCategories } from '../../../functions/categories';
@@ -35,9 +36,20 @@ const CategoryCreate = () => {
             <h4>Create Category</h4>
           )}
 
-          <CategoryCreateForm loading={loading} setLoading={setLoading} />
+          <CategoryCreateForm
+            loading={loading}
+            setLoading={setLoading}
+            loadCategories={loadCategories}
+          />
           <hr />
-          {categories.length}
+          {categories.map((category) => (
+            <CategoriesList
+              key={category._id}
+              category={category}
+              setLoading={setLoading}
+              loadCategories={loadCategories}
+            />
+          ))}
         </div>
       </div>
     </div>

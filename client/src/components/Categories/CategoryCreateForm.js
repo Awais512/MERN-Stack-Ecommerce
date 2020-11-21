@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import {
-  createCategory,
-  getCategories,
-  removeCategory,
-} from '../../functions/categories';
+import { createCategory } from '../../functions/categories';
 
-const CategoryCreateForm = ({ loading, setLoading }) => {
+const CategoryCreateForm = ({ loading, setLoading, loadCategories }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [name, setName] = useState('');
 
@@ -21,6 +17,7 @@ const CategoryCreateForm = ({ loading, setLoading }) => {
       setLoading(false);
       setName('');
       toast.success(`${res.data.name} is created successfully`);
+      loadCategories();
     } catch (error) {
       console.log(error);
       setLoading(false);
