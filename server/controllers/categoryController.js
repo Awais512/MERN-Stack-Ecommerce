@@ -19,8 +19,8 @@ exports.createCategory = async (req, res) => {
 //@access   Private/Admin
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
-    res.status(200).json(categories);
+    const categories = await Category.find({}).sort({ createdAt: -1 });
+    res.status(200).json({ count: categories.length, categories });
   } catch (error) {
     res.status(400).json({ err: err.message });
   }
@@ -29,22 +29,45 @@ exports.getCategories = async (req, res) => {
 //@Route    GET /api/category/:id
 //@access   Private/Admin
 exports.getCategory = asyncHandler(async (req, res) => {
-  //   try {
-  //     const category = await Category.findById(req.params.slug);
-  //     if (category) {
-  //       res.status(200).json(category);
-  //     } else {
-  //       return res.status(404).json({ msg: 'Category does not Exist' });
-  //     }
-  //   } catch (err) {
-  //     res.status(400).json({ err: err.message });
-  //   }
+  try {
+    const category = await Category.findOne({ slug: req.params.slug });
+    if (category) {
+      res.status(200).json(category);
+    } else {
+      return res.status(404).json({ msg: 'Category does not Exist' });
+    }
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
 });
 //@desc     Update Category
 //@Route    PUT /api/category/:id
 //@access   Private/Admin
-exports.updateCategory = asyncHandler(async (req, res) => {});
+exports.updateCategory = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+  try {
+    const category = await Category.findOneAndUpdate(
+      { slug: req.params.slug },
+      { name, slug: slugify(name) },
+      { new: true }
+    );
+    res.json(category);
+  } catch (err) {
+    res.status(400).json({ err: err.message, msg: 'Update failed' });
+  }
+});
 //@desc     Delete Category
 //@Route    DELETE /api/category/:id
 //@access   Private/Admin
-exports.deleteCategory = asyncHandler(async (req, res) => {});
+exports.deleteCategory = asyncHandler(async (req, res) => {
+  try {
+    const category = await Category.findOneAndDelete({ slug: req.params.slug });
+    if (category) {
+      res.status(204).send('Category Removed Successfully');
+    } else {
+      return res.status(404).json({ msg: 'Category does not exist' });
+    }
+  } catch (err) {
+    res.status(400).json({ err: err.message });
+  }
+});

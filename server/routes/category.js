@@ -11,10 +11,10 @@ const {
 
 const { authCheck, adminCheck } = require('../middlewares/authMiddleware');
 
-router.get('/category', authCheck, adminCheck, getCategories);
+router.get('/category', getCategories);
 router.post('/category', authCheck, adminCheck, createCategory);
-router.get('/category/:slug', authCheck, adminCheck, getCategory);
-router.put('/category:/slug', authCheck, adminCheck, updateCategory);
+router.get('/category/:slug', getCategory);
+router.put('/category/:slug', authCheck, adminCheck, updateCategory);
 router.delete('/category/:slug', authCheck, adminCheck, deleteCategory);
 
 // router
