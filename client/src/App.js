@@ -18,6 +18,7 @@ import Password from './pages/user/Password';
 import Whishlist from './pages/user/Whishlist';
 import AdminRoute from './components/routes/AdminRoute';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import CategoryCreate from './pages/admin/categories/CategoryCreate';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const App = () => {
         <UserRoute path='/user/password' exact component={Password} />
         <UserRoute path='/user/whishlist' exact component={Whishlist} />
         <AdminRoute path='/admin/dashboard' exact component={AdminDashboard} />
+        <AdminRoute path='/admin/category' exact component={CategoryCreate} />
       </Switch>
     </>
   );

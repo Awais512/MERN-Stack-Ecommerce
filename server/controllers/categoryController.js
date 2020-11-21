@@ -20,7 +20,7 @@ exports.createCategory = async (req, res) => {
 exports.getCategories = async (req, res) => {
   try {
     const categories = await Category.find({}).sort({ createdAt: -1 });
-    res.status(200).json({ count: categories.length, categories });
+    res.status(200).json(categories);
   } catch (error) {
     res.status(400).json({ err: err.message });
   }
