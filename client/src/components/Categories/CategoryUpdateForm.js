@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { createCategory } from '../../functions/categories';
+import { updateCategory } from '../../functions/categories';
 
-const CategoryCreateForm = ({ setLoading, loadCategories }) => {
+const CategoryUpdateForm = ({ setLoading, name, setName, history, slug }) => {
   const { user } = useSelector((state) => ({ ...state }));
-  const [name, setName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = await createCategory({ name }, user.token);
+      const res = await updateCategory(slug, { name }, user.token);
+      //   console.log(res.data);
       setLoading(false);
       setName('');
-      toast.success(`${res.data.name} is created successfully`);
-      loadCategories();
+      toast.success(`${res.data.name} is Updated successfully`);
+      history.push('/admin/category');
     } catch (error) {
       console.log(error);
       setLoading(false);
       toast.error(error.message);
     }
+
+    // .then((res)=>{
+    //     setLoading(false)
+    //     setName('')
+    //     toast.success(``)
+    // })
+    // .catch()
   };
 
   return (
@@ -42,4 +49,4 @@ const CategoryCreateForm = ({ setLoading, loadCategories }) => {
   );
 };
 
-export default CategoryCreateForm;
+export default CategoryUpdateForm;

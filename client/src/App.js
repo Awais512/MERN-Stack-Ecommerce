@@ -19,6 +19,8 @@ import Whishlist from './pages/user/Whishlist';
 import AdminRoute from './components/routes/AdminRoute';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/categories/CategoryCreate';
+import CategoryUpdateForm from './components/Categories/CategoryUpdateForm';
+import CategoryUpdate from './pages/admin/categories/CategoryUpdate';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -61,6 +63,11 @@ const App = () => {
         <UserRoute path='/user/whishlist' exact component={Whishlist} />
         <AdminRoute path='/admin/dashboard' exact component={AdminDashboard} />
         <AdminRoute path='/admin/category' exact component={CategoryCreate} />
+        <AdminRoute
+          path='/admin/category/:slug'
+          exact
+          component={CategoryUpdate}
+        />
       </Switch>
     </>
   );

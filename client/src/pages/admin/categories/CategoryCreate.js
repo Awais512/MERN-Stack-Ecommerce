@@ -16,11 +16,6 @@ const CategoryCreate = () => {
     const cats = await getCategories();
     const { data } = cats;
     setCategories(data);
-    console.log(data);
-    // getCategories().then((c) => {
-    //   setCategories(c.data);
-    //   console.log(c.data);
-    // });
   };
 
   return (
