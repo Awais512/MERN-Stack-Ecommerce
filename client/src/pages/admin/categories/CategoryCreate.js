@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import CategoriesList from '../../../components/Categories/CategoriesList';
 import CategoryCreateForm from '../../../components/Categories/CategoryCreateForm';
+import SearchCategoriesForm from '../../../components/Categories/SearchCategoriesForm';
 import AdminNav from '../../../components/nav/AdminNav';
 import { getCategories } from '../../../functions/categories';
 
 const CategoryCreate = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [keyword, setKeyword] = useState('');
 
   useEffect(() => {
     loadCategories();
@@ -17,6 +19,8 @@ const CategoryCreate = () => {
     const { data } = cats;
     setCategories(data);
   };
+
+  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
 
   return (
     <div className='container-fluid'>
@@ -36,8 +40,9 @@ const CategoryCreate = () => {
             setLoading={setLoading}
             loadCategories={loadCategories}
           />
-          <hr />
-          {categories.map((category) => (
+
+          <SearchCategoriesForm keyword={keyword} setKeyword={setKeyword} />
+          {categories.filter(searched(keyword)).map((category) => (
             <CategoriesList
               key={category._id}
               category={category}
