@@ -11,11 +11,11 @@ const {
 
 const { authCheck, adminCheck } = require('../middlewares/authMiddleware');
 
-router.get('/subcategory', getSubs);
-router.post('/subcategory', authCheck, adminCheck, createSub);
-router.get('/subcategory/:slug', getSub);
-router.put('/subcategory/:slug', authCheck, adminCheck, updateSub);
-router.delete('/subcategory/:slug', authCheck, adminCheck, deleteSub);
+router.get('/sub', getSubs);
+router.post('/sub', authCheck, adminCheck, createSub);
+router.get('/sub/:slug', getSub);
+router.put('/sub/:slug', authCheck, adminCheck, updateSub);
+router.delete('/sub/:slug', authCheck, adminCheck, deleteSub);
 
 // router
 //   .route('/category')

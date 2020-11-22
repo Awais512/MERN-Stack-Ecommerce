@@ -21,6 +21,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/categories/CategoryCreate';
 import CategoryUpdateForm from './components/Categories/CategoryUpdateForm';
 import CategoryUpdate from './pages/admin/categories/CategoryUpdate';
+import Subcategories from './pages/admin/subcategories/Subcategories';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -68,6 +69,8 @@ const App = () => {
           exact
           component={CategoryUpdate}
         />
+
+        <AdminRoute path='/admin/sub' exact component={Subcategories} />
       </Switch>
     </>
   );
