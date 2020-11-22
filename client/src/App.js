@@ -19,9 +19,9 @@ import Whishlist from './pages/user/Whishlist';
 import AdminRoute from './components/routes/AdminRoute';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CategoryCreate from './pages/admin/categories/CategoryCreate';
-import CategoryUpdateForm from './components/Categories/CategoryUpdateForm';
 import CategoryUpdate from './pages/admin/categories/CategoryUpdate';
 import Subcategories from './pages/admin/subcategories/Subcategories';
+import SubcategoriesUpdate from './pages/admin/subcategories/SubcategoriesUpdate';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -71,6 +71,11 @@ const App = () => {
         />
 
         <AdminRoute path='/admin/sub' exact component={Subcategories} />
+        <AdminRoute
+          path='/admin/sub/:slug'
+          exact
+          component={SubcategoriesUpdate}
+        />
       </Switch>
     </>
   );

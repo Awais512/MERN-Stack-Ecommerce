@@ -50,11 +50,11 @@ exports.getSub = async (req, res) => {
 //@Route    PUT /api/subcategory
 //@access   Private/Admin
 exports.updateSub = async (req, res) => {
-  const { name } = req.body;
+  const { name, parent } = req.body;
   try {
     const subcategory = await Sub.findOneAndUpdate(
       { slug: req.params.slug },
-      { name, slug: slugify(name) },
+      { name, parent, slug: slugify(name) },
       { new: true }
     );
     res.json(subcategory);
