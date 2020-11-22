@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { createSub } from '../../functions/subcategories';
 
-const SubcategoryForm = ({ setLoading, category }) => {
+const SubcategoryForm = ({ setLoading, category, loadSubCategories }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [name, setName] = useState('');
 
@@ -16,6 +16,7 @@ const SubcategoryForm = ({ setLoading, category }) => {
       setLoading(false);
       setName('');
       toast.success(`${res.data.name} is created successfully`);
+      loadSubCategories();
     } catch (error) {
       console.log(error);
       setLoading(false);

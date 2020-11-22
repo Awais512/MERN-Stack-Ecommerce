@@ -4,21 +4,30 @@ import SearchCategoriesForm from '../../../components/Categories/SearchCategorie
 import AdminNav from '../../../components/nav/AdminNav';
 import SubcategoryForm from '../../../components/Subcategories/SubcategoryForm';
 import { getCategories } from '../../../functions/categories';
+import { getSubs } from '../../../functions/subcategories';
 
 const Subcategories = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState([]);
   const [keyword, setKeyword] = useState('');
+  const [subs, setSubs] = useState([]);
 
   useEffect(() => {
     loadCategories();
+    loadSubCategories();
   }, []);
 
   const loadCategories = async () => {
     const cats = await getCategories();
     const { data } = cats;
     setCategories(data);
+  };
+
+  const loadSubCategories = async () => {
+    const subcats = await getSubs();
+    const { data } = subcats;
+    setSubs(data);
   };
 
   const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
@@ -58,17 +67,18 @@ const Subcategories = () => {
             loading={loading}
             setLoading={setLoading}
             loadCategories={loadCategories}
+            loadSubCategories={loadSubCategories}
           />
 
           <SearchCategoriesForm keyword={keyword} setKeyword={setKeyword} />
-          {/* {categories.filter(searched(keyword)).map((category) => (
+          {subs.filter(searched(keyword)).map((subcategory) => (
             <SubcategoriesList
-              key={category._id}
-              category={category}
+              key={subcategory._id}
+              subcategory={subcategory}
               setLoading={setLoading}
-              loadCategories={loadCategories}
+              loadSubCategories={loadSubCategories}
             />
-          ))} */}
+          ))}
         </div>
       </div>
     </div>

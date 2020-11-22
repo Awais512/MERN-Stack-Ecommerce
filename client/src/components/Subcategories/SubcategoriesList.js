@@ -5,7 +5,7 @@ import { removeSub } from '../../functions/subcategories';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const CategoriesList = ({ category, setLoading, loadCategories }) => {
+const CategoriesList = ({ subcategory, setLoading, loadSubCategories }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const handleRemove = async (slug) => {
     if (window.confirm('Delete?')) {
@@ -13,7 +13,8 @@ const CategoriesList = ({ category, setLoading, loadCategories }) => {
       try {
         const res = await removeSub(slug, user.token);
         setLoading(false);
-        toast.success(`${res.data.name} deleted successfully`);
+        toast.error(`${res.data.name} deleted successfully`);
+        loadSubCategories();
       } catch (error) {
         if (error.response.status === 400) {
           console.log(error);
@@ -25,14 +26,14 @@ const CategoriesList = ({ category, setLoading, loadCategories }) => {
   };
   return (
     <div className='alert alert-secondary'>
-      {category.name}
+      {subcategory.name}
       <span
-        onClick={() => handleRemove(category.slug)}
+        onClick={() => handleRemove(subcategory.slug)}
         className='btn btn-sm float-right'
       >
         <DeleteOutlined className='text-danger' />
       </span>
-      <Link to={`/admin/category/${category.slug}`}>
+      <Link to={`/admin/sub/${subcategory.slug}`}>
         <span className='btn btn-sm float-right'>
           <EditOutlined className='text-warning' />
         </span>
