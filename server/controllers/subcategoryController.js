@@ -6,8 +6,12 @@ const slugify = require('slugify');
 //@access   Private/Admin
 exports.createSub = async (req, res) => {
   try {
-    const { name } = req.body;
-    const category = await new Sub({ name, slug: slugify(name) }).save();
+    const { name, parent } = req.body;
+    const category = await new Sub({
+      name,
+      parent,
+      slug: slugify(name),
+    }).save();
     res.status(201).json(category);
   } catch (err) {
     res.status(400).send('Create Subcategory Failed');
