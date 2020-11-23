@@ -62,9 +62,10 @@ const ProductCreate = () => {
   const handleCategoryChange = async (e) => {
     e.preventDefault();
     console.log('Clicked category', e.target.value);
-    setValues({ ...values, category: e.target.value });
+    setValues({ ...values, subs: [], category: e.target.value });
     const res = await getCategorySubs(e.target.value);
     setSubOptions(res.data);
+    setShowSub(true);
     console.log(res.data);
   };
 
@@ -79,7 +80,6 @@ const ProductCreate = () => {
           <h4>Product create</h4>
           <hr />
 
-          {JSON.stringify(values.subs)}
           <ProductForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
