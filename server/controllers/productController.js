@@ -14,3 +14,16 @@ exports.createProduct = async (req, res) => {
     res.status(400).json({ err: err.message });
   }
 };
+
+//@desc     Get all Products
+//@Route    POST /api/product
+//@access   Private/admin
+exports.getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ err: err.message });
+  }
+};
