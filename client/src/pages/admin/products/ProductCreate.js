@@ -79,10 +79,12 @@ const ProductCreate = () => {
           <h4>Product create</h4>
           <hr />
 
+          {JSON.stringify(values.subs)}
           <ProductForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             values={values}
+            setValues={setValues}
             handleCategoryChange={handleCategoryChange}
             showSub={showSub}
             subOptions={subOptions}

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { createProduct } from '../../functions/products';
-import { toast } from 'react-toastify';
+import React from 'react';
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 const ProductForm = ({
   handleSubmit,
   handleChange,
   values,
+  setValues,
   handleCategoryChange,
   subOptions,
   showSub,
@@ -126,8 +127,20 @@ const ProductForm = ({
           </select>
         </div>
       </div>
+      <div>
+        <label>Subcategories</label>
+        <Select
+          mode='multiple'
+          style={{ width: '100%' }}
+          placeholder='Please Select the values'
+          value={subs}
+          onChange={(value) => setValues({ ...values, subs: value })}
+        >
+          <Option value='one'>Option 1</Option>
+          <Option value='two'>Option 2</Option>
+        </Select>
+      </div>
 
-      {subOptions ? subOptions.length : 'no subs yet'}
       <button className='btn btn-outline-info'>Save</button>
     </form>
   );
