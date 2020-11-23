@@ -3,7 +3,13 @@ import { useSelector } from 'react-redux';
 import { createProduct } from '../../functions/products';
 import { toast } from 'react-toastify';
 
-const ProductForm = ({ handleSubmit, handleChange, values }) => {
+const ProductForm = ({
+  handleSubmit,
+  handleChange,
+  values,
+  handleCategoryChange,
+}) => {
+  //Destructuring the props
   const {
     title,
     description,
@@ -106,7 +112,7 @@ const ProductForm = ({ handleSubmit, handleChange, values }) => {
           <select
             name='category'
             className='form-control'
-            onChange={handleChange}
+            onChange={handleCategoryChange}
           >
             <option>Please select</option>
             {categories.length > 0 &&

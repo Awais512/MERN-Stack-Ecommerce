@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { createProduct } from '../../../functions/products';
 import ProductForm from '../../../components/forms/ProductForm';
-import { getCategories } from '../../../functions/categories';
+import { getCategories, getCategorySubs } from '../../../functions/categories';
 
 const ProductCreate = () => {
   const initialState = {
@@ -23,6 +23,7 @@ const ProductCreate = () => {
     brand: 'Apple',
   };
   const [values, setValues] = useState(initialState);
+  const [subOptions, setSubOptions] = useState([]);
 
   // redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -57,6 +58,15 @@ const ProductCreate = () => {
     // console.log(e.target.name, " ----- ", e.target.value);
   };
 
+  const handleCategoryChange = async (e) => {
+    e.preventDefault();
+    console.log('Clicked category', e.target.value);
+    setValues({ ...values, category: e.target.value });
+    const res = await getCategorySubs(e.target.value);
+    setSubOptions(res.data);
+    console.log(res.data);
+  };
+
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -72,6 +82,7 @@ const ProductCreate = () => {
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             values={values}
+            handleCategoryChange={handleCategoryChange}
           />
         </div>
       </div>
