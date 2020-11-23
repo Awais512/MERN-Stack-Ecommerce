@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminNav from '../../../components/nav/AdminNav';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { createProduct } from '../../../functions/products';
 import ProductForm from '../../../components/forms/ProductForm';
+import { getCategories } from '../../../functions/categories';
+
 const ProductCreate = () => {
   const initialState = {
     title: 'Macbook Pro',
@@ -24,6 +26,16 @@ const ProductCreate = () => {
 
   // redux
   const { user } = useSelector((state) => ({ ...state }));
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    const loadCats = await getCategories();
+    console.log(loadCats.data);
+    setValues({ ...values, categories: loadCats.data });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
