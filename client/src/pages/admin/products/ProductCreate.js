@@ -6,19 +6,19 @@ import { createProduct } from '../../../functions/products';
 import ProductForm from '../../../components/forms/ProductForm';
 
 const initialState = {
-  title: '',
-  description: '',
-  price: '',
+  title: 'Sample Laptop',
+  description: 'Sample description Laptop',
+  price: '100',
   categories: [],
   category: '',
   subs: [],
   shipping: '',
-  quantity: '',
+  quantity: '50',
   images: [],
   colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
   brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
-  color: '',
-  brand: '',
+  color: 'white',
+  brand: 'Apple',
 };
 
 const ProductCreate = () => {

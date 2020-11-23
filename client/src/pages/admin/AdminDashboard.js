@@ -8,7 +8,7 @@ const Dashboard = () => {
         <div className='col-md-2'>
           <AdminNav />
         </div>
-        <div className='col'></div>
+        <div className='col'>Admin dashboard</div>
       </div>
     </div>
   );

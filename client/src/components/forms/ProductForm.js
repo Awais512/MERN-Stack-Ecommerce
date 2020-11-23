@@ -28,6 +28,8 @@ const ProductForm = ({ initialState }) => {
     try {
       const product = await createProduct(values, user.token);
       console.log(product);
+      window.alert(`"${product.data.title}" created successfully`);
+      window.location.reload();
     } catch (err) {
       console.log(err);
       if (err.response.status === 400) {
