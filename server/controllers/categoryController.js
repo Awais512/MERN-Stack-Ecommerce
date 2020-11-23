@@ -1,4 +1,5 @@
 const Category = require('../models/categoryModel');
+const Sub = require('../models/subModel');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 
@@ -67,3 +68,15 @@ exports.deleteCategory = asyncHandler(async (req, res) => {
     res.status(400).send('Delete Failed. Bad Request');
   }
 });
+
+//@desc     Get Sub Category
+//@Route    GET /api/category/subs/:_id
+//@access   Private/Admin
+exports.getSubs = async (req, res) => {
+  try {
+    const subs = await Sub.find({ parent: req.params._id });
+    res.json(subs);
+  } catch (err) {
+    console.log(err);
+  }
+};
