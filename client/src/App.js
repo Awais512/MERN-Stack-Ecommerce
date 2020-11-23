@@ -22,7 +22,7 @@ import CategoryCreate from './pages/admin/categories/CategoryCreate';
 import CategoryUpdate from './pages/admin/categories/CategoryUpdate';
 import Subcategories from './pages/admin/subcategories/Subcategories';
 import SubcategoriesUpdate from './pages/admin/subcategories/SubcategoriesUpdate';
-import ProductCreate from './pages/product/ProductCreate';
+import ProductCreate from './pages/admin/products/ProductCreate';
 
 const App = () => {
   const dispatch = useDispatch();

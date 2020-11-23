@@ -10,6 +10,7 @@ exports.createProduct = async (req, res) => {
     const product = await new Product(req.body).save();
     res.json(product);
   } catch (error) {
+    console.log(error);
     res.status(400).send('Create Product failed');
   }
 };
