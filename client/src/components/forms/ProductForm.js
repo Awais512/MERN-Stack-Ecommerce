@@ -3,10 +3,7 @@ import { useSelector } from 'react-redux';
 import { createProduct } from '../../functions/products';
 import { toast } from 'react-toastify';
 
-const ProductForm = ({ initialState }) => {
-  const [values, setValues] = useState(initialState);
-  const { user } = useSelector((state) => ({ ...state }));
-
+const ProductForm = ({ handleSubmit, handleChange, values }) => {
   const {
     title,
     description,
@@ -23,25 +20,6 @@ const ProductForm = ({ initialState }) => {
     brands,
   } = values;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const product = await createProduct(values, user.token);
-      console.log(product);
-      window.alert(`"${product.data.title}" created successfully`);
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-      // if (err.response.status === 400) {
-      //   toast.error(err.response.data);
-      // }
-      toast.error(err.response.data.err);
-    }
-  };
-
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
   return (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>

@@ -4,42 +4,46 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { createProduct } from '../../../functions/products';
 import ProductForm from '../../../components/forms/ProductForm';
-
-const initialState = {
-  title: 'Sample Laptop',
-  description: 'Sample description Laptop',
-  price: '100',
-  categories: [],
-  category: '',
-  subs: [],
-  shipping: '',
-  quantity: '50',
-  images: [],
-  colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
-  brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
-  color: 'white',
-  brand: 'Apple',
-};
-
 const ProductCreate = () => {
+  const initialState = {
+    title: 'Macbook Pro',
+    description: 'This is the best Apple product',
+    price: '45000',
+    categories: [],
+    category: '',
+    subs: [],
+    shipping: 'Yes',
+    quantity: '50',
+    images: [],
+    colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
+    brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
+    color: 'White',
+    brand: 'Apple',
+  };
   const [values, setValues] = useState(initialState);
+
+  // redux
   const { user } = useSelector((state) => ({ ...state }));
 
-  const {
-    title,
-    description,
-    price,
-    categories,
-    category,
-    subs,
-    shipping,
-    quantity,
-    images,
-    color,
-    colors,
-    brand,
-    brands,
-  } = values;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createProduct(values, user.token)
+      .then((res) => {
+        console.log(res);
+        window.alert(`"${res.data.title}" is created`);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        // if (err.response.status === 400) toast.error(err.response.data);
+        toast.error(err.response.data.err);
+      });
+  };
+
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+    // console.log(e.target.name, " ----- ", e.target.value);
+  };
 
   return (
     <div className='container-fluid'>
@@ -47,11 +51,16 @@ const ProductCreate = () => {
         <div className='col-md-2'>
           <AdminNav />
         </div>
+
         <div className='col-md-10'>
-          <h4>Product Create</h4>
+          <h4>Product create</h4>
           <hr />
 
-          <ProductForm initialState={initialState} />
+          <ProductForm
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            values={values}
+          />
         </div>
       </div>
     </div>
