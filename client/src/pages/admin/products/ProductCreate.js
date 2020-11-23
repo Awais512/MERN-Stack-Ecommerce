@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { createProduct } from '../../../functions/products';
 import ProductForm from '../../../components/forms/ProductForm';
 import { getCategories, getCategorySubs } from '../../../functions/categories';
+import FileUpload from '../../../components/forms/FileUpload';
 
 const ProductCreate = () => {
   const initialState = {
@@ -35,7 +36,7 @@ const ProductCreate = () => {
 
   const loadCategories = async () => {
     const loadCats = await getCategories();
-    console.log(loadCats.data);
+
     setValues({ ...values, categories: loadCats.data });
   };
 
@@ -49,19 +50,16 @@ const ProductCreate = () => {
       })
       .catch((err) => {
         console.log(err);
-        // if (err.response.status === 400) toast.error(err.response.data);
         toast.error(err.response.data.err);
       });
   };
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(e.target.name, " ----- ", e.target.value);
   };
 
   const handleCategoryChange = async (e) => {
     e.preventDefault();
-    console.log('Clicked category', e.target.value);
     setValues({ ...values, subs: [], category: e.target.value });
     const res = await getCategorySubs(e.target.value);
     setSubOptions(res.data);
@@ -79,6 +77,10 @@ const ProductCreate = () => {
         <div className='col-md-10'>
           <h4>Product create</h4>
           <hr />
+
+          <div className='p-3'>
+            <FileUpload />
+          </div>
 
           <ProductForm
             handleSubmit={handleSubmit}
