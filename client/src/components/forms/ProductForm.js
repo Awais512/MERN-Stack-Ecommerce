@@ -8,6 +8,8 @@ const ProductForm = ({
   handleChange,
   values,
   handleCategoryChange,
+  subOptions,
+  showSub,
 }) => {
   //Destructuring the props
   const {
@@ -124,6 +126,8 @@ const ProductForm = ({
           </select>
         </div>
       </div>
+
+      {subOptions ? subOptions.length : 'no subs yet'}
       <button className='btn btn-outline-info'>Save</button>
     </form>
   );
