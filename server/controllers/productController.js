@@ -24,6 +24,12 @@ exports.getProducts = async (req, res) => {
     res.json(products);
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err: err.message });
+    res
+      .status(400)
+      .json({ err: err.message })
+      .limit(parseInt(req.params.count))
+      .populate('category')
+      .populate('subs')
+      .sort([['createdAt', 'desc']]);
   }
 };
