@@ -11,7 +11,7 @@ const AdminProductsCard = ({ product }) => {
       cover={
         <img
           src={images && images.length ? images[0].url : ''}
-          className='m-2'
+          className='p-1'
           style={{ height: '150px', objectFit: 'cover' }}
           alt={title}
         />
