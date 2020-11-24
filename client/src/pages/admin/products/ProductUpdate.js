@@ -8,7 +8,7 @@ import { getCategories, getCategorySubs } from '../../../functions/categories';
 import FileUpload from '../../../components/forms/FileUpload';
 import { LoadingOutlined } from '@ant-design/icons';
 
-const ProductUpdate = () => {
+const ProductUpdate = ({ match }) => {
   // redux
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -21,6 +21,7 @@ const ProductUpdate = () => {
 
         <div className='col-md-10'>
           <h4>Product Update</h4>
+          {JSON.stringify(match.params.slug)}
           <hr />
         </div>
       </div>
