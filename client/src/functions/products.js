@@ -13,3 +13,8 @@ export const createProduct = async (product, authtoken) => {
     config
   );
 };
+
+//Create Products
+export const getProductsByCount = async (count) => {
+  return await axios.get(`${process.env.REACT_APP_API}/product/${count}`);
+};
