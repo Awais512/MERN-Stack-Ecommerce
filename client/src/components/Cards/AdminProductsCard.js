@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import laptop from '../../images/laptop.png';
@@ -19,7 +20,10 @@ const AdminProductsCard = ({ product, handleRemove }) => {
         />
       }
       actions={[
-        <EditOutlined className='text-warning' />,
+        <Link to={`/admin/products/${slug}`}>
+          {' '}
+          <EditOutlined className='text-warning' />
+        </Link>,
         <DeleteOutlined
           className='text-danger'
           onClick={() => handleRemove(slug)}
