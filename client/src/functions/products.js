@@ -18,3 +18,16 @@ export const createProduct = async (product, authtoken) => {
 export const getProductsByCount = async (count) => {
   return await axios.get(`${process.env.REACT_APP_API}/product/${count}`);
 };
+
+//Remove Categories
+export const removeProduct = async (slug, authtoken) => {
+  const config = {
+    headers: {
+      authtoken,
+    },
+  };
+  return await axios.delete(
+    `${process.env.REACT_APP_API}/product/${slug}`,
+    config
+  );
+};
