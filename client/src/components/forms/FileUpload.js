@@ -2,9 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import Resizer from 'react-image-file-resizer';
 import { useSelector } from 'react-redux';
-import { Avatar } from 'antd';
+import { Avatar, Badge } from 'antd';
 
-const FileUpload = ({ values, setValues, setLoading }) => {
+const FileUpload = ({ values, setValues, setLoading, loading }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const fileUploadAndResize = (e) => {
     // console.log(e.target.files);
@@ -48,23 +48,55 @@ const FileUpload = ({ values, setValues, setLoading }) => {
     }
   };
 
+  const handlrImageRemove = async (public_id) => {
+    setLoading(true);
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API}/removeimages`,
+        { public_id },
+        {
+          headers: {
+            authtoken: user ? user.token : '',
+          },
+        }
+      );
+      setLoading(false);
+      const { images } = values;
+      let filteredImages = images.filter((item) => {
+        return item.public_id !== public_id;
+      });
+      setValues({ ...values, images: filteredImages });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
+    <div>
       <div className='row'>
         {values.images &&
           values.images.map((img) => (
-            <Avatar
+            <Badge
+              count='X'
               key={img.public_id}
-              src={img.url}
-              size={100}
-              className='m-3'
-            />
+              onClick={() => handlrImageRemove(img.public_id)}
+              style={{ cursor: 'pointer' }}
+            >
+              <Avatar
+                src={img.url}
+                size={100}
+                className='ml-3'
+                shape='square'
+              />
+            </Badge>
           ))}
       </div>
       <div className='row'>
         <label className='btn btn-primary btn-raised'>
           Choose File
           <input
+            disabled={loading}
             type='file'
             multiple
             accept='images/*'
@@ -73,7 +105,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
           />
         </label>
       </div>
-    </>
+    </div>
   );
 };
 
