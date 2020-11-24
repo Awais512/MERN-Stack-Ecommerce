@@ -7,10 +7,12 @@ const {
   createProduct,
   getProducts,
   deleteProducts,
+  getProduct,
 } = require('../controllers/productController');
 
 router.post('/product', authCheck, adminCheck, createProduct);
 router.get('/product/:count', getProducts);
+router.get('/product/:slug', getProduct);
 router.delete('/product/:slug', authCheck, adminCheck, deleteProducts);
 
 module.exports = router;

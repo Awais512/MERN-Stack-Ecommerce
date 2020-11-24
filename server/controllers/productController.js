@@ -31,6 +31,21 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+//@desc     Get Product by Slug
+//@Route    get /api/product/:slug
+//@access   Public
+exports.getProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({ slug: req.params.slug })
+      .populate('category')
+      .populate('subs');
+    res.json(product);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Bad request');
+  }
+};
+
 //@desc     Delete Product
 //@Route    DELETE /api/product/:slug
 //@access   Private/admin
