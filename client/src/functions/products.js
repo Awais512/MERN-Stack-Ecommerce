@@ -16,7 +16,7 @@ export const createProduct = async (product, authtoken) => {
 
 //Create Products
 export const getProductsByCount = async (count) => {
-  return await axios.get(`${process.env.REACT_APP_API}/product/${count}`);
+  return await axios.get(`${process.env.REACT_APP_API}/products/${count}`);
 };
 
 //Remove Categories
@@ -31,3 +31,6 @@ export const removeProduct = async (slug, authtoken) => {
     config
   );
 };
+
+export const getProduct = async (slug) =>
+  await axios.get(`${process.env.REACT_APP_API}/product/${slug}`);

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  // redux
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
@@ -29,21 +29,19 @@ const AllProducts = () => {
       });
   };
 
-  const handleRemove = async (slug) => {
-    let answer = window.confirm('Are sure you want to delete?');
-
-    try {
-      if (answer) {
-        await removeProduct(slug, user.token);
-        loadAllProducts();
-        toast.error(`Product is deleted`);
-      }
-    } catch (error) {
-      if (error.response.status === 400) {
-        console.log(error);
-        setLoading(false);
-        toast.error(error.message);
-      }
+  const handleRemove = (slug) => {
+    // let answer = window.confirm("Delete?");
+    if (window.confirm('Delete?')) {
+      // console.log("send delete request", slug);
+      removeProduct(slug, user.token)
+        .then((res) => {
+          loadAllProducts();
+          toast.error(`${res.data.title} is deleted`);
+        })
+        .catch((err) => {
+          if (err.response.status === 400) toast.error(err.response.data);
+          console.log(err);
+        });
     }
   };
 
@@ -75,4 +73,5 @@ const AllProducts = () => {
     </div>
   );
 };
+
 export default AllProducts;
