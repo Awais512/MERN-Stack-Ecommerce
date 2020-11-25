@@ -11,13 +11,14 @@ const ProductUpdateForm = ({
   setValues,
   handleCategoryChange,
   subOptions,
+  arrayOfSubIds,
+  setArrayOfSubIds,
 }) => {
   //Destructuring the props
   const {
     title,
     description,
     price,
-
     category,
     subs,
     shipping,
@@ -139,25 +140,24 @@ const ProductUpdateForm = ({
           </select>
         </div>
       </div>
-      {/* {showSub && (
-        <div>
-          <label>Subcategories</label>
-          <Select
-            mode='multiple'
-            style={{ width: '100%' }}
-            placeholder='Please Select the values'
-            value={subs}
-            onChange={(value) => setValues({ ...values, subs: value })}
-          >
-            {subOptions.length &&
-              subOptions.map((subOption) => (
-                <Option key={subOption._id} value={subOption._id}>
-                  {subOption.name}
-                </Option>
-              ))}
-          </Select>
-        </div>
-      )} */}
+
+      <div>
+        <label>Subcategories</label>
+        <Select
+          mode='multiple'
+          style={{ width: '100%' }}
+          placeholder='Please Select the values'
+          value={arrayOfSubIds}
+          onChange={(value) => setArrayOfSubIds(value)}
+        >
+          {subOptions.length &&
+            subOptions.map((subOption) => (
+              <Option key={subOption._id} value={subOption._id}>
+                {subOption.name}
+              </Option>
+            ))}
+        </Select>
+      </div>
       <br />
       <button className='btn btn-outline-info'>Save</button>
     </form>

@@ -28,6 +28,7 @@ const ProductUpdate = ({ match }) => {
   const [values, setValues] = useState(initialState);
   const [subOptions, setSubOptions] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [arrayOfSubIds, setArrayOfSubIds] = useState([]);
 
   const { user } = useSelector((state) => ({ ...state }));
   // router
@@ -40,26 +41,31 @@ const ProductUpdate = ({ match }) => {
 
   const loadProduct = () => {
     getProduct(slug).then((p) => {
-      // console.log("single product", p);
       setValues({ ...values, ...p.data });
+      getCategorySubs(p.data.category._id).then((res) => {
+        setSubOptions(res.data);
+      });
+      let arr = [];
+      p.data.subs.map((s) => {
+        return arr.push(s._id);
+      });
+      console.log(arr);
+      setArrayOfSubIds((prev) => arr);
     });
   };
 
   const loadCategories = async () => {
     const loadCats = await getCategories();
 
-    console.log(loadCats.data);
     setCategories(loadCats.data);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //
   };
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(e.target.name, " ----- ", e.target.value);
   };
 
   const handleCategoryChange = async (e) => {
@@ -67,7 +73,6 @@ const ProductUpdate = ({ match }) => {
     setValues({ ...values, subs: [], category: e.target.value });
     const res = await getCategorySubs(e.target.value);
     setSubOptions(res.data);
-    console.log(res.data);
   };
   return (
     <div className='container-fluid'>
@@ -78,7 +83,6 @@ const ProductUpdate = ({ match }) => {
 
         <div className='col-md-10'>
           <h4>Product update</h4>
-          {JSON.stringify(values)}
 
           <ProductUpdateForm
             handleSubmit={handleSubmit}
@@ -88,6 +92,8 @@ const ProductUpdate = ({ match }) => {
             values={values}
             subOptions={subOptions}
             categories={categories}
+            arrayOfSubIds={arrayOfSubIds}
+            setArrayOfSubIds={setArrayOfSubIds}
           />
           <hr />
         </div>
