@@ -3,7 +3,7 @@ import AdminNav from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { getProduct } from '../../../functions/products';
-// import { getCategories, getCategorySubs } from '../../../functions/category';
+import { getCategories, getCategorySubs } from '../../../functions/categories';
 import FileUpload from '../../../components/forms/FileUpload';
 import { LoadingOutlined } from '@ant-design/icons';
 import ProductUpdateForm from '../../../components/forms/ProductUpdateForm';
@@ -12,7 +12,6 @@ const initialState = {
   title: '',
   description: '',
   price: '',
-  categories: [],
   category: '',
   subs: [],
   shipping: '',
@@ -27,6 +26,8 @@ const initialState = {
 const ProductUpdate = ({ match }) => {
   // state
   const [values, setValues] = useState(initialState);
+  const [subOptions, setSubOptions] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const { user } = useSelector((state) => ({ ...state }));
   // router
@@ -34,6 +35,7 @@ const ProductUpdate = ({ match }) => {
 
   useEffect(() => {
     loadProduct();
+    loadCategories();
   }, []);
 
   const loadProduct = () => {
@@ -41,6 +43,13 @@ const ProductUpdate = ({ match }) => {
       // console.log("single product", p);
       setValues({ ...values, ...p.data });
     });
+  };
+
+  const loadCategories = async () => {
+    const loadCats = await getCategories();
+
+    console.log(loadCats.data);
+    setCategories(loadCats.data);
   };
 
   const handleSubmit = (e) => {
@@ -53,6 +62,13 @@ const ProductUpdate = ({ match }) => {
     // console.log(e.target.name, " ----- ", e.target.value);
   };
 
+  const handleCategoryChange = async (e) => {
+    e.preventDefault();
+    setValues({ ...values, subs: [], category: e.target.value });
+    const res = await getCategorySubs(e.target.value);
+    setSubOptions(res.data);
+    console.log(res.data);
+  };
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -67,8 +83,11 @@ const ProductUpdate = ({ match }) => {
           <ProductUpdateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
+            handleCategoryChange={handleCategoryChange}
             setValues={setValues}
             values={values}
+            subOptions={subOptions}
+            categories={categories}
           />
           <hr />
         </div>

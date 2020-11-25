@@ -7,14 +7,17 @@ const ProductUpdateForm = ({
   handleSubmit,
   handleChange,
   values,
+  categories,
   setValues,
+  handleCategoryChange,
+  subOptions,
 }) => {
   //Destructuring the props
   const {
     title,
     description,
     price,
-    categories,
+
     category,
     subs,
     shipping,
@@ -117,14 +120,16 @@ const ProductUpdateForm = ({
             ))}
           </select>
         </div>
-        {/* <div className='form-group'>
+        <div className='form-group'>
           <label>Category</label>
           <select
             name='category'
             className='form-control'
             onChange={handleCategoryChange}
           >
-            <option>Please select</option>
+            <option>
+              {category ? category.name : 'Please Select a Category'}
+            </option>
             {categories.length > 0 &&
               categories.map((c) => (
                 <option key={c._id} value={c._id}>
@@ -132,7 +137,7 @@ const ProductUpdateForm = ({
                 </option>
               ))}
           </select>
-        </div> */}
+        </div>
       </div>
       {/* {showSub && (
         <div>
