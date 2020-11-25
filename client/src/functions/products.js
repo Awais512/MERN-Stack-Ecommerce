@@ -34,3 +34,17 @@ export const removeProduct = async (slug, authtoken) => {
 
 export const getProduct = async (slug) =>
   await axios.get(`${process.env.REACT_APP_API}/product/${slug}`);
+
+//Update Product
+export const updateProduct = async (slug, product, authtoken) => {
+  const config = {
+    headers: {
+      authtoken,
+    },
+  };
+  return await axios.put(
+    `${process.env.REACT_APP_API}/product/${slug}`,
+    product,
+    config
+  );
+};
