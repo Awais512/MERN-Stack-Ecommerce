@@ -29,6 +29,7 @@ const ProductUpdate = ({ match }) => {
   const [subOptions, setSubOptions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [arrayOfSubIds, setArrayOfSubIds] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const { user } = useSelector((state) => ({ ...state }));
   // router
@@ -70,9 +71,17 @@ const ProductUpdate = ({ match }) => {
 
   const handleCategoryChange = async (e) => {
     e.preventDefault();
-    setValues({ ...values, subs: [], category: e.target.value });
+    setValues({ ...values, subs: [] });
+    setSelectedCategory(e.target.value);
     const res = await getCategorySubs(e.target.value);
     setSubOptions(res.data);
+
+    //Load previous state of category's subcategories
+    if (values.category._id === e.target.value) {
+      loadProduct();
+    }
+    //Clear Subcategories when user change parent category
+    setArrayOfSubIds([]);
   };
   return (
     <div className='container-fluid'>
@@ -94,6 +103,7 @@ const ProductUpdate = ({ match }) => {
             categories={categories}
             arrayOfSubIds={arrayOfSubIds}
             setArrayOfSubIds={setArrayOfSubIds}
+            selectedCategory={selectedCategory}
           />
           <hr />
         </div>

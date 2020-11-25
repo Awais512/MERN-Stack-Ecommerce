@@ -13,6 +13,7 @@ const ProductUpdateForm = ({
   subOptions,
   arrayOfSubIds,
   setArrayOfSubIds,
+  selectedCategory,
 }) => {
   //Destructuring the props
   const {
@@ -127,10 +128,8 @@ const ProductUpdateForm = ({
             name='category'
             className='form-control'
             onChange={handleCategoryChange}
+            value={selectedCategory ? selectedCategory : category._id}
           >
-            <option>
-              {category ? category.name : 'Please Select a Category'}
-            </option>
             {categories.length > 0 &&
               categories.map((c) => (
                 <option key={c._id} value={c._id}>
