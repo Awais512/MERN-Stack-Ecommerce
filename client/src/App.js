@@ -25,6 +25,7 @@ import SubcategoriesUpdate from './pages/admin/subcategories/SubcategoriesUpdate
 import ProductCreate from './pages/admin/products/ProductCreate';
 import AllProducts from './pages/admin/products/AllProducts';
 import ProductUpdate from './pages/admin/products/ProductUpdate';
+import Product from './pages/Product';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ const App = () => {
         <Route path='/register' exact component={Register} />
         <Route path='/register/complete' exact component={RegisterComplete} />
         <Route path='/forgot/password' exact component={ForgotPassword} />
+        <Route path='/product/:slug' exact component={Product} />
         <UserRoute path='/user/history' exact component={History} />
         <UserRoute path='/user/password' exact component={Password} />
         <UserRoute path='/user/whishlist' exact component={Whishlist} />
