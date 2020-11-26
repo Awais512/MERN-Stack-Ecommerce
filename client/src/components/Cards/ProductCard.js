@@ -10,7 +10,6 @@ const ProductCard = ({ product }) => {
   return (
     <Card
       hoverable
-      style={{ width: '240' }}
       cover={
         <img
           src={images && images.length ? images[0].url : laptop}
