@@ -20,7 +20,7 @@ const ProductCreate = () => {
     quantity: '50',
     images: [],
     colors: ['Black', 'Brown', 'Silver', 'White', 'Blue', 'Red'],
-    brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS', 'Hp'],
+    brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS', 'Hp', 'Dell'],
     color: 'White',
     brand: 'Apple',
   };
