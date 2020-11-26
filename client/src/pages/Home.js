@@ -1,49 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Jumbotron from '../components/Cards/Jumbotron';
-import LoadingCard from '../components/Cards/LoadingCard';
-import ProductCard from '../components/Cards/ProductCard';
-import { getProductsByCount } from '../functions/products';
+
+import NewArrivals from '../components/Home/NewArrivals';
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const loadAllProducts = async () => {
-    setLoading(true);
-    const { data } = await getProductsByCount(6);
-    setLoading(false);
-    setProducts(data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    loadAllProducts();
-  }, []);
-
   return (
     <>
       <div className='jumbotron text-danger h1 font-weight-bold text-center'>
-        {loading ? (
-          <h1 className='text-danger'>Loading...</h1>
-        ) : (
-          <Jumbotron
-            text={['Latest Products', 'New Arrivals', 'Best Sellers']}
-          />
-        )}
+        <Jumbotron text={['Latest Products', 'New Arrivals', 'Best Sellers']} />
       </div>
-      <div className='container'>
-        {loading ? (
-          <LoadingCard count={3} />
-        ) : (
-          <div className='row'>
-            {products.map((product) => (
-              <div key={product._id} className='col-md-4'>
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <h4 className='text-center p-3 mt-5 mb-5 display-4 jumbotron'>
+        New Arrivals
+      </h4>
+      <NewArrivals />
+      <br />
+      <br />
     </>
   );
 };
