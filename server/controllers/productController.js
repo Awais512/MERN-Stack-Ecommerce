@@ -65,3 +65,15 @@ exports.updateProduct = async (req, res) => {
     });
   }
 };
+
+exports.list = async (req, res) => {
+  const [sort, order, limit] = req.body;
+  try {
+    const products = await Product.find({})
+      .populate('category')
+      .populate('subs')
+      .sort([[sort, order]])
+      .limit(limit);
+    res.json(products);
+  } catch (error) {}
+};
