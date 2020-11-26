@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Jumbotron from '../components/Cards/Jumbotron';
+import LoadingCard from '../components/Cards/LoadingCard';
 import ProductCard from '../components/Cards/ProductCard';
 import { getProductsByCount } from '../functions/products';
 
@@ -12,7 +13,7 @@ const Home = () => {
     const { data } = await getProductsByCount(6);
     setLoading(false);
     setProducts(data);
-    console.log(data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Home = () => {
     <>
       <div className='jumbotron text-danger h1 font-weight-bold text-center'>
         {loading ? (
-          <h1>Loading...</h1>
+          <h1 className='text-danger'>Loading...</h1>
         ) : (
           <Jumbotron
             text={['Latest Products', 'New Arrivals', 'Best Sellers']}
@@ -31,13 +32,17 @@ const Home = () => {
         )}
       </div>
       <div className='container'>
-        <div className='row'>
-          {products.map((product) => (
-            <div key={product._id} className='col-md-4'>
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <LoadingCard count={3} />
+        ) : (
+          <div className='row'>
+            {products.map((product) => (
+              <div key={product._id} className='col-md-4'>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
