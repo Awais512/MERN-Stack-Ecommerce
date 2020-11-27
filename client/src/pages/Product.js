@@ -9,7 +9,6 @@ const Product = ({ match }) => {
   const loadSingleProduct = async () => {
     const { data } = await getProduct(slug);
     setProduct(data);
-    console.log(data);
   };
 
   useEffect(() => {
