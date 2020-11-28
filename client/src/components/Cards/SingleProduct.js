@@ -6,34 +6,32 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Laptop from '../../images/laptop.png';
 import ProductListItems from './ProductListItems';
-import StarRatings from 'react-star-ratings';
+import StarRating from 'react-star-ratings';
 import RatingModal from '../Modal/RatingModal';
 
 const { TabPane } = Tabs;
 
-const SingleProduct = ({ product }) => {
+// this is childrend component of Product page
+const SingleProduct = ({ product, onStarClick, star }) => {
   const { title, images, description, _id } = product;
+
   return (
     <>
       <div className='col-md-7'>
         {images && images.length ? (
           <Carousel showArrows={true} autoPlay infiniteLoop>
-            {images &&
-              images.map((img) => (
-                <img src={img.url} key={img.public_id} alt={title} />
-              ))}
+            {images && images.map((i) => <img src={i.url} key={i.public_id} />)}
           </Carousel>
         ) : (
-          <Card
-            cover={<img src={Laptop} className='mb-3 card-image' alt={title} />}
-          ></Card>
+          <Card cover={<img src={Laptop} className='mb-3 card-image' />}></Card>
         )}
+
         <Tabs type='card'>
           <TabPane tab='Description' key='1'>
             {description && description}
           </TabPane>
           <TabPane tab='More' key='2'>
-            Call us on +92311634444 to learn more about this product
+            Call use on xxxx xxx xxx to learn more about this product.
           </TabPane>
         </Tabs>
       </div>
@@ -51,13 +49,13 @@ const SingleProduct = ({ product }) => {
               <HeartOutlined className='text-info' /> <br /> Add to Wishlist
             </Link>,
             <RatingModal>
-              <StarRatings
+              <StarRating
                 name={_id}
                 numberOfStars={5}
-                starRatedColor='red'
-                rating={2}
-                changeRating={(newRating, name) => console.log(newRating, name)}
+                rating={star}
+                changeRating={onStarClick}
                 isSelectable={true}
+                starRatedColor='red'
               />
             </RatingModal>,
           ]}
