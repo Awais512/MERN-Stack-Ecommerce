@@ -1,4 +1,6 @@
 const Sub = require('../models/subModel');
+const Product = require('../models/productModel');
+
 const slugify = require('slugify');
 
 //@desc     Create Sub Category
@@ -34,16 +36,15 @@ exports.getSubs = async (req, res) => {
 //@Route    GET /api/subcategory
 //@access   Public
 exports.getSub = async (req, res) => {
-  try {
-    const subcategory = await Sub.findOne({ slug: req.params.slug });
-    if (subcategory) {
-      res.status(200).json(subcategory);
-    } else {
-      return res.status(404).json({ msg: 'Category does not Exist' });
-    }
-  } catch (err) {
-    res.status(400).json({ err: err.message });
-  }
+  let sub = await Sub.findOne({ slug: req.params.slug }).exec();
+  const products = await Product.find({ subs: sub })
+    .populate('category')
+    .exec();
+
+  res.json({
+    sub,
+    products,
+  });
 };
 
 //@desc     Update Sub Category
