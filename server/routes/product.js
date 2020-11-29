@@ -14,6 +14,7 @@ const {
   updateProduct,
   productsCount,
   productStar,
+  listRelated,
 } = require('../controllers/productController');
 
 // routes
@@ -25,5 +26,6 @@ router.get('/product/:slug', read);
 router.put('/product/:slug', authCheck, adminCheck, updateProduct);
 router.post('/products', list);
 router.put('/product/star/:productId', authCheck, productStar);
+router.get('/product/related/:productId', listRelated);
 
 module.exports = router;
