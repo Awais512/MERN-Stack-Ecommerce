@@ -1,5 +1,6 @@
 const Category = require('../models/categoryModel');
 const Sub = require('../models/subModel');
+const Product = require('../models/productModel');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 
@@ -29,18 +30,15 @@ exports.getCategories = async (req, res) => {
 //@desc     Get single Category
 //@Route    GET /api/category/:id
 //@access   Private/Admin
-exports.getCategory = asyncHandler(async (req, res) => {
-  try {
-    const category = await Category.findOne({ slug: req.params.slug });
-    if (category) {
-      res.status(200).json(category);
-    } else {
-      return res.status(404).json({ msg: 'Category does not Exist' });
-    }
-  } catch (err) {
-    res.status(400).json({ err: err.message });
-  }
-});
+exports.getCategory = async (req, res) => {
+  const category = await Category.findOne({ slug: req.params.slug });
+  const products = await Product.find({ category }).populate('category');
+  res.json({
+    category,
+    products,
+  });
+};
+
 //@desc     Update Category
 //@Route    PUT /api/category/:id
 //@access   Private/Admin
