@@ -244,6 +244,6 @@ exports.searchFilters = async (req, res) => {
   }
 
   if (stars) {
-    await handleStars(req, res, category);
+    await handleStars(req, res, stars);
   }
 };
