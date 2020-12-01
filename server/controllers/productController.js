@@ -162,6 +162,7 @@ exports.listRelated = async (req, res) => {
   res.json(related);
 };
 
+//Handle Search Text
 const handleQuery = async (req, res, query) => {
   const products = await Product.find({ $text: { $search: query } })
     .populate('category', '_id name')
@@ -171,6 +172,7 @@ const handleQuery = async (req, res, query) => {
   res.json(products);
 };
 
+//Handle Price Filter
 const handlePrice = async (req, res, price) => {
   try {
     let products = await Product.find({
@@ -188,8 +190,20 @@ const handlePrice = async (req, res, price) => {
   }
 };
 
+const handleCategory = async (req, res, category) => {
+  try {
+    const products = await Product.find({ category })
+      .populate('category', '_id name')
+      .populate('subs', '_id name')
+      .populate('postedBy', '_id name');
+    res.json(products);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 exports.searchFilters = async (req, res) => {
-  const { query, price } = req.body;
+  const { query, price, category } = req.body;
 
   if (query) {
     console.log(query);
@@ -197,5 +211,9 @@ exports.searchFilters = async (req, res) => {
   }
   if (price !== undefined) {
     await handlePrice(req, res, price);
+  }
+
+  if (category) {
+    await handleCategory(req, res, category);
   }
 };
