@@ -203,7 +203,7 @@ const Shop = () => {
         name={b}
         checked={b === brand}
         onChange={handleBrand}
-        className='pb-1 pl-4 pr-4'
+        className='col ml-4'
       >
         {b}
       </Radio>
