@@ -29,6 +29,7 @@ import Product from './pages/Product';
 import CategoryHome from './pages/category/CategoryHome';
 import SubHome from './pages/sub/SubHome';
 import Shop from './pages/Shop';
+import Cart from './pages/Cart';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -70,9 +71,12 @@ const App = () => {
         <Route path='/category/:slug' exact component={CategoryHome} />
         <Route path='/sub/:slug' exact component={SubHome} />
         <Route path='/shop' exact component={Shop} />
+        <Route path='/cart' exact component={Cart} />
+
         <UserRoute path='/user/history' exact component={History} />
         <UserRoute path='/user/password' exact component={Password} />
         <UserRoute path='/user/whishlist' exact component={Whishlist} />
+
         <AdminRoute path='/admin/dashboard' exact component={AdminDashboard} />
         <AdminRoute path='/admin/category' exact component={CategoryCreate} />
         <AdminRoute
@@ -86,7 +90,6 @@ const App = () => {
           exact
           component={SubcategoriesUpdate}
         />
-
         <AdminRoute path='/admin/product' exact component={ProductCreate} />
         <AdminRoute path='/admin/products' exact component={AllProducts} />
         <AdminRoute path='/admin/product/:slug' component={ProductUpdate} />
