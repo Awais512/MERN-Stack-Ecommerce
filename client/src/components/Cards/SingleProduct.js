@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { Card, Tabs, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Carousel } from 'react-responsive-carousel';
@@ -9,22 +9,59 @@ import ProductListItems from './ProductListItems';
 import StarRating from 'react-star-ratings';
 import RatingModal from '../Modal/RatingModal';
 import { showAverage } from '../../functions/rating';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const { TabPane } = Tabs;
 
 // this is childrend component of Product page
 const SingleProduct = ({ product, onStarClick, star }) => {
+  const [tooltip, setTooltip] = useState('Click to add');
+  const dispatch = useDispatch();
+  const { user, cart } = useSelector((state) => ({ ...state }));
+
   const { title, images, description, _id } = product;
+
+  const handleAddToCart = () => {
+    // create cart array
+    let cart = [];
+    if (typeof window !== 'undefined') {
+      // if cart is in local storage GET it
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+      // push new product to cart
+      cart.push({
+        ...product,
+        count: 1,
+      });
+      // remove duplicates
+      let unique = _.uniqWith(cart, _.isEqual);
+      // save to local storage
+      localStorage.setItem('cart', JSON.stringify(unique));
+      //Save to redux state
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: unique,
+      });
+      setTooltip('Added');
+    }
+  };
 
   return (
     <>
       <div className='col-md-7'>
         {images && images.length ? (
           <Carousel showArrows={true} autoPlay infiniteLoop>
-            {images && images.map((i) => <img src={i.url} key={i.public_id} />)}
+            {images &&
+              images.map((i) => (
+                <img src={i.url} key={i.public_id} alt={title} />
+              ))}
           </Carousel>
         ) : (
-          <Card cover={<img src={Laptop} className='mb-3 card-image' />}></Card>
+          <Card
+            cover={<img src={Laptop} className='mb-3 card-image' alt={title} />}
+          ></Card>
         )}
 
         <Tabs type='card'>
@@ -48,8 +85,12 @@ const SingleProduct = ({ product, onStarClick, star }) => {
         <Card
           actions={[
             <>
-              <ShoppingCartOutlined className='text-success' /> <br />
-              Add to Cart
+              <Tooltip title={tooltip}>
+                <a onClick={handleAddToCart}>
+                  <ShoppingCartOutlined className='text-success' />
+                </a>
+                <br /> Add to Cart
+              </Tooltip>
             </>,
             <Link to='/'>
               <HeartOutlined className='text-info' /> <br /> Add to Wishlist

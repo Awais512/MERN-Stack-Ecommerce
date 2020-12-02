@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import { EyeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import laptop from '../../images/laptop.png';
 import { showAverage } from '../../functions/rating';
+import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
+  const { user, cart } = useSelector((state) => ({ ...state }));
   const [tooltip, setTooltip] = useState('Click to add');
   const handleAddToCart = () => {
     // create cart array
@@ -26,8 +29,12 @@ const ProductCard = ({ product }) => {
       // remove duplicates
       let unique = _.uniqWith(cart, _.isEqual);
       // save to local storage
-
       localStorage.setItem('cart', JSON.stringify(unique));
+      //Save to redux state
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: cart,
+      });
       setTooltip('Added');
     }
   };
