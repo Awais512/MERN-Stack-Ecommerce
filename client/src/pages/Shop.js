@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../components/Cards/ProductCard';
-import { Menu, Slider, Checkbox } from 'antd';
+import { Menu, Slider, Checkbox, Radio } from 'antd';
 
 import { getCategories } from '../functions/categories';
 import { getSubs } from '../functions/subcategories';
@@ -28,6 +28,16 @@ const Shop = () => {
   const [star, setStar] = useState('');
   const [subs, setSubs] = useState([]);
   const [sub, setSub] = useState('');
+  const [brands, setBrands] = useState([
+    'Apple',
+    'Samsung',
+    'Microsoft',
+    'Lenovo',
+    'ASUS',
+    'Hp',
+    'Dell',
+  ]);
+  const [brand, setBrand] = useState('');
 
   let dispatch = useDispatch();
   let { search } = useSelector((state) => ({ ...state }));
@@ -37,6 +47,7 @@ const Shop = () => {
     loadAllProducts();
     // fetch categories
     getCategories().then((res) => setCategories(res.data));
+    // fetch subcategories
     getSubs().then((res) => setSubs(res.data));
   }, []);
 
@@ -79,6 +90,7 @@ const Shop = () => {
     setPrice(value);
     setStar('');
     setSub('');
+    setBrand('');
     setTimeout(() => {
       setOk(!ok);
     }, 300);
@@ -112,6 +124,7 @@ const Shop = () => {
     setPrice([0, 0]);
     setStar('');
     setSub('');
+    setBrand('');
     // console.log(e.target.value);
     let inTheState = [...categoryIds];
     let justChecked = e.target.value;
@@ -141,36 +154,35 @@ const Shop = () => {
     setCategoryIds([]);
     setStar(num);
     setSub('');
+    setBrand('');
     fetchProducts({ stars: num });
   };
 
   const showStars = () => (
     <div className='pr-4 pl-4 pb-2'>
       <Star starClick={handleStarClick} numberOfStars={5} />
-      <br />
       <Star starClick={handleStarClick} numberOfStars={4} />
-      <br />
       <Star starClick={handleStarClick} numberOfStars={3} />
-      <br />
       <Star starClick={handleStarClick} numberOfStars={2} />
-      <br />
       <Star starClick={handleStarClick} numberOfStars={1} />
     </div>
   );
 
+  // 6. show products by sub category
   const showSubs = () =>
-    subs.map((sub) => (
+    subs.map((s) => (
       <div
-        key={sub._id}
-        onClick={() => handleSub(sub)}
+        key={s._id}
+        onClick={() => handleSub(s)}
         className='p-1 m-1 badge badge-secondary'
         style={{ cursor: 'pointer' }}
       >
-        {sub.name}
+        {s.name}
       </div>
     ));
 
   const handleSub = (sub) => {
+    // console.log("SUB", sub);
     setSub(sub);
     dispatch({
       type: 'SEARCH_QUERY',
@@ -179,8 +191,37 @@ const Shop = () => {
     setPrice([0, 0]);
     setCategoryIds([]);
     setStar('');
+    setBrand('');
     fetchProducts({ sub });
   };
+
+  // 7. show products based on brand name
+  const showBrands = () =>
+    brands.map((b) => (
+      <Radio
+        value={b}
+        name={b}
+        checked={b === brand}
+        onChange={handleBrand}
+        className='pb-1 pl-4 pr-4'
+      >
+        {b}
+      </Radio>
+    ));
+
+  const handleBrand = (e) => {
+    setSub('');
+    dispatch({
+      type: 'SEARCH_QUERY',
+      payload: { text: '' },
+    });
+    setPrice([0, 0]);
+    setCategoryIds([]);
+    setStar('');
+    setBrand(e.target.value);
+    fetchProducts({ brand: e.target.value });
+  };
+
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -188,7 +229,10 @@ const Shop = () => {
           <h4>Search/Filter</h4>
           <hr />
 
-          <Menu defaultOpenKeys={['1', '2', '3', '4']} mode='inline'>
+          <Menu
+            defaultOpenKeys={['1', '2', '3', '4', '5', '6', '7']}
+            mode='inline'
+          >
             {/* price */}
             <SubMenu
               key='1'
@@ -233,6 +277,8 @@ const Shop = () => {
             >
               <div style={{ maringTop: '-10px' }}>{showStars()}</div>
             </SubMenu>
+
+            {/* sub category */}
             <SubMenu
               key='4'
               title={
@@ -243,6 +289,20 @@ const Shop = () => {
             >
               <div style={{ maringTop: '-10px' }} className='pl-4 pr-4'>
                 {showSubs()}
+              </div>
+            </SubMenu>
+
+            {/* brands */}
+            <SubMenu
+              key='5'
+              title={
+                <span className='h6'>
+                  <DownSquareOutlined /> Brands
+                </span>
+              }
+            >
+              <div style={{ maringTop: '-10px' }} className='pr-5'>
+                {showBrands()}
               </div>
             </SubMenu>
           </Menu>
