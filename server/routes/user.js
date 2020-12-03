@@ -1,8 +1,9 @@
 const express = require('express');
+const { userCart } = require('../controllers/userController');
 
-const { getUser } = require('../controllers/userController');
+const { authCheck } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.get('/user', getUser);
+router.post('/cart', authCheck, userCart);
 
 module.exports = router;
