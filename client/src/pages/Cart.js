@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartTable from '../components/Cart/CartTable';
+import { userCart } from '../functions/user';
 
 const Cart = ({ history }) => {
   const dispatch = useDispatch();
@@ -13,9 +14,14 @@ const Cart = ({ history }) => {
     }, 0);
   };
 
-  const saveOrderToDb = () => {
-    alert('Proceeded');
-    history.push('/checkout');
+  const saveOrderToDb = async () => {
+    try {
+      const { data } = await userCart(cart, user.token);
+      console.log(data);
+      if (data.ok) history.push('/checkout');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const showCartItems = () => (
