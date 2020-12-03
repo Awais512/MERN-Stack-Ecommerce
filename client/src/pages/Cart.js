@@ -25,7 +25,7 @@ const Cart = () => {
               No items in the cart <Link to='/shop'>Continue Shopping</Link>
             </p>
           ) : (
-            <CartTable />
+            <CartTable cart={cart} />
           )}
         </div>
         <div className='col-md-4'>

@@ -1,9 +1,8 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import ModalImage from 'react-modal-image';
+import Laptop from '../../images/laptop.png';
 
-const CartTable = () => {
-  const dispatch = useDispatch();
-  const { user, cart } = useSelector((state) => ({ ...state }));
+const CartTable = ({ cart }) => {
   return (
     <table className='table table-bordered'>
       <thead className='thead-light'>
@@ -21,8 +20,25 @@ const CartTable = () => {
 
       <tbody>
         {cart.map((p) => (
-          <tr>
-            <td>Image</td>
+          <tr key={p._id}>
+            <td>
+              <div style={{ width: '100px', height: 'auto' }}>
+                {p.images.length ? (
+                  <ModalImage
+                    small={p.images[0].url}
+                    large={p.images[0].url}
+                    alt={p.title}
+                  />
+                ) : (
+                  <ModalImage
+                    small={Laptop}
+                    large={Laptop}
+                    alt='Hello World!'
+                  />
+                )}
+              </div>
+              ;
+            </td>
             <td>{p.title}</td>
             <td>${p.price}</td>
             <td>{p.brand}</td>
