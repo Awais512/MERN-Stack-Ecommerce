@@ -1,0 +1,13 @@
+import React from 'react';
+import { Button, Drawer } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import laptop from '../../images/laptop.png';
+
+const SideDrawer = ({ children }) => {
+  const dispatch = useDispatch();
+  const { drawer, cart } = useSelector((state) => ({ ...state }));
+  return <Drawer visible={true}>{JSON.stringify(cart)}</Drawer>;
+};
+
+export default SideDrawer;
