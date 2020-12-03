@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import CartTable from '../components/Cart/CartTable';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const Cart = () => {
               No items in the cart <Link to='/shop'>Continue Shopping</Link>
             </p>
           ) : (
-            'Show cart Items'
+            <CartTable />
           )}
         </div>
         <div className='col-md-4'>
@@ -50,16 +51,15 @@ const Cart = () => {
               Proceed to Checkout
             </button>
           ) : (
-            <button className='btn btn-small btn-primary mt-2 '>
-              <Link
-                to={{
-                  pathname: '/login',
-                  state: { from: 'cart' },
-                }}
-              >
-                Login to Checkout
-              </Link>
-            </button>
+            <Link
+              className='btn btn-small btn-primary mt-2 btn-raised'
+              to={{
+                pathname: '/login',
+                state: { from: 'cart' },
+              }}
+            >
+              Login to Checkout
+            </Link>
           )}
         </div>
       </div>
