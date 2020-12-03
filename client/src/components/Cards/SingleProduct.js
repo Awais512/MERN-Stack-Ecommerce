@@ -39,12 +39,17 @@ const SingleProduct = ({ product, onStarClick, star }) => {
       let unique = _.uniqWith(cart, _.isEqual);
       // save to local storage
       localStorage.setItem('cart', JSON.stringify(unique));
+      setTooltip('Added');
       //Save to redux state
       dispatch({
         type: 'ADD_TO_CART',
         payload: unique,
       });
-      setTooltip('Added');
+      //Show cart items to sidedrawer
+      dispatch({
+        type: 'SET_VISIBLE',
+        payload: true,
+      });
     }
   };
 
