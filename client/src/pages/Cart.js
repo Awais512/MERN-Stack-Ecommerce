@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartTable from '../components/Cart/CartTable';
 
-const Cart = () => {
+const Cart = ({ history }) => {
   const dispatch = useDispatch();
   const { user, cart } = useSelector((state) => ({ ...state }));
 
@@ -13,7 +13,10 @@ const Cart = () => {
     }, 0);
   };
 
-  const saveOrderToDb = () => {};
+  const saveOrderToDb = () => {
+    alert('Proceeded');
+    history.push('/checkout');
+  };
 
   const showCartItems = () => (
     <table className='table table-bordered'>
