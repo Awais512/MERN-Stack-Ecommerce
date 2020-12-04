@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getUserCart, emptyUserCart } from '../functions/user';
+import { getUserCart, emptyUserCart, saveUserAddress } from '../functions/user';
 
 const Checkout = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
+  const [address, setAddress] = useState('');
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     getUserCart(user.token).then((res) => {
-      console.log('user cart res', JSON.stringify(res.data, null, 4));
       setProducts(res.data.products);
       setTotal(res.data.cartTotal);
     });
@@ -36,8 +36,10 @@ const Checkout = () => {
     });
   };
 
-  const saveAddressToDb = () => {
-    //
+  const saveAddressToDb = async () => {
+    const { data } = await saveUserAddress(user.token, user.address);
+    setAddress(data);
+    console.log(data);
   };
 
   return (
@@ -53,6 +55,7 @@ const Checkout = () => {
         >
           Save
         </button>
+        {JSON.stringify(address)}
         <hr />
         <h4>Got Coupon?</h4>
         <br />

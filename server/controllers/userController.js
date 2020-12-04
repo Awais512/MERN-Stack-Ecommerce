@@ -69,3 +69,13 @@ exports.emptyCart = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.saveAddress = async (req, res) => {
+  try {
+    const userAddress = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { address: req.body.address }
+    );
+    res.json({ ok: true });
+  } catch (error) {}
+};
