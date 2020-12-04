@@ -1,29 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserCart } from '../functions/user';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { getUserCart, emptyUserCart } from '../functions/user';
 
 const Checkout = () => {
-  let dispatch = useDispatch();
-  let { user } = useSelector((state) => ({ ...state }));
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
 
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => ({ ...state }));
+
   useEffect(() => {
-    getUserCart(user.token).then(({ data }) => {
-      console.log(data.products);
-      setProducts(data.products);
-      setTotal(data.cartTotal);
+    getUserCart(user.token).then((res) => {
+      console.log('user cart res', JSON.stringify(res.data, null, 4));
+      setProducts(res.data.products);
+      setTotal(res.data.cartTotal);
     });
   }, []);
 
-  const saveAddressToDb = () => {};
+  const emptyCart = () => {
+    // remove from local storage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('cart');
+    }
+    // remove from redux
+    dispatch({
+      type: 'ADD_TO_CART',
+      payload: [],
+    });
+    // remove from backend
+    emptyUserCart(user.token).then((res) => {
+      setProducts([]);
+      setTotal(0);
+      toast.success('Cart is emapty. Contniue shopping.');
+    });
+  };
+
+  const saveAddressToDb = () => {
+    //
+  };
+
   return (
     <div className='row'>
       <div className='col-md-6'>
-        <h4>Delievery Address</h4>
+        <h4>Delivery Address</h4>
         <br />
         <br />
-        Textarea
+        textarea
         <button
           className='btn btn-primary mt-2 btn-raised'
           onClick={saveAddressToDb}
@@ -33,12 +56,13 @@ const Checkout = () => {
         <hr />
         <h4>Got Coupon?</h4>
         <br />
-        coupon input button
+        coupon input and apply button
       </div>
+
       <div className='col-md-6'>
-        <h4>Order summary</h4>
+        <h4>Order Summary</h4>
         <hr />
-        <p>Products x {products.length}</p>
+        <p>Products {products.length}</p>
         <hr />
         {products.map((p, i) => (
           <div key={i}>
@@ -49,13 +73,21 @@ const Checkout = () => {
           </div>
         ))}
         <hr />
-        <p>Cart Total: ${total}</p>
+        <p>Cart Total: {total}</p>
+
         <div className='row'>
           <div className='col-md-6'>
             <button className='btn btn-primary btn-raised'>Place Order</button>
           </div>
+
           <div className='col-md-6'>
-            <button className='btn btn-primary btn-raised'>Empty Cart</button>
+            <button
+              disabled={!products.length}
+              onClick={emptyCart}
+              className='btn btn-primary btn-raised'
+            >
+              Empty Cart
+            </button>
           </div>
         </div>
       </div>
