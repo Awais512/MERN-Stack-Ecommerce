@@ -5,23 +5,23 @@ import CartTable from '../components/Cart/CartTable';
 import { userCart } from '../functions/user';
 
 const Cart = ({ history }) => {
+  const { cart, user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
-  const { user, cart } = useSelector((state) => ({ ...state }));
 
   const getTotal = () => {
-    return cart.reduce((current, next) => {
-      return current + next.count * next.price;
+    return cart.reduce((currentValue, nextValue) => {
+      return currentValue + nextValue.count * nextValue.price;
     }, 0);
   };
 
-  const saveOrderToDb = async () => {
-    try {
-      const { data } = await userCart(cart, user.token);
-      console.log(data);
-      if (data.ok) history.push('/checkout');
-    } catch (error) {
-      console.log(error);
-    }
+  const saveOrderToDb = () => {
+    // console.log("cart", JSON.stringify(cart, null, 4));
+    userCart(cart, user.token)
+      .then((res) => {
+        console.log('CART POST RES', res);
+        if (res.data.ok) history.push('/checkout');
+      })
+      .catch((err) => console.log('cart save err', err));
   };
 
   const showCartItems = () => (
@@ -49,11 +49,11 @@ const Cart = ({ history }) => {
     <div className='container-fluid pt-2'>
       <div className='row'>
         <div className='col-md-8'>
-          <h4>Cart/ {cart.length} Product</h4>
+          <h4>Cart / {cart.length} Product</h4>
 
           {!cart.length ? (
             <p>
-              No items in the cart <Link to='/shop'>Continue Shopping</Link>
+              No products in cart. <Link to='/shop'>Continue Shopping.</Link>
             </p>
           ) : (
             showCartItems()
@@ -71,26 +71,27 @@ const Cart = ({ history }) => {
             </div>
           ))}
           <hr />
-          Total <b>${getTotal()}</b>
+          Total: <b>${getTotal()}</b>
           <hr />
           {user ? (
             <button
               onClick={saveOrderToDb}
-              className='btn btn-small btn-primary mt-2 btn-raised'
+              className='btn btn-sm btn-primary btn-raised mt-2'
               disabled={!cart.length}
             >
               Proceed to Checkout
             </button>
           ) : (
-            <Link
-              className='btn btn-small btn-primary mt-2 btn-raised'
-              to={{
-                pathname: '/login',
-                state: { from: 'cart' },
-              }}
-            >
-              Login to Checkout
-            </Link>
+            <button className='btn btn-sm btn-primary mt-2'>
+              <Link
+                to={{
+                  pathname: '/login',
+                  state: { from: 'cart' },
+                }}
+              >
+                Login to Checkout
+              </Link>
+            </button>
           )}
         </div>
       </div>
