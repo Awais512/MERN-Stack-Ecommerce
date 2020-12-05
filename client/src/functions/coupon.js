@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-export const getCoupons = async () => {
+export const getCoupons = async () =>
   await axios.get(`${process.env.REACT_APP_API}/coupons`);
-};
 
 export const removeCoupons = async (couponId, authtoken) => {
   const config = {
