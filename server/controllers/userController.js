@@ -1,8 +1,7 @@
 const User = require('../models/userModel');
 const Product = require('../models/productModel');
 const Cart = require('../models/cartModel');
-const { findOne } = require('../models/userModel');
-
+const Coupon = require('../models/couponModel');
 exports.userCart = async (req, res) => {
   // console.log(req.body); // {cart: []}
   const { cart } = req.body;
@@ -78,4 +77,33 @@ exports.saveAddress = async (req, res) => {
     );
     res.json({ ok: true });
   } catch (error) {}
+};
+
+exports.applyCoupon = async (req, res) => {
+  const { coupon } = req.body;
+  console.log(coupon);
+  const validCoupon = await Coupon.findOne({ name: coupon });
+
+  if (validCoupon === null) {
+    return res.json({
+      err: 'Invalid Coupon',
+    });
+  }
+
+  const user = await User.findOne({ email: req.user.email });
+
+  let { products, cartTotal } = await Cart.findOne({
+    orderdBy: user._id,
+  }).populate('products.product', 'id title price');
+
+  let totalAfterDiscount = (
+    cartTotal -
+    (cartTotal * validCoupon.discount) / 100
+  ).toFixed(2);
+  Cart.findOneAndUpdate(
+    { orderdBy: user._id },
+    { totalAfterDiscount },
+    { new: true }
+  );
+  res.json(totalAfterDiscount);
 };
