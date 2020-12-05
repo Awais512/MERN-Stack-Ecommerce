@@ -12,8 +12,29 @@ import {
 } from '../../../functions/coupon';
 
 const CreateCouponPage = () => {
+  const [name, setName] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [loading, setLoading] = useState('');
+
+  // redux
   const { user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    // console.table(name, expiry, discount);
+    createCoupons({ name, expiry, discount }, user.token)
+      .then((res) => {
+        setLoading(false);
+        setName('');
+        setDiscount('');
+        setExpiry('');
+        toast.success(`"${res.data.name}" is created`);
+      })
+      .catch((err) => console.log('create coupon err', err));
+  };
+
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -21,7 +42,46 @@ const CreateCouponPage = () => {
           <AdminNav />
         </div>
         <div className='col-md-10'>
-          <h4>Coupons</h4>
+          <h4>Coupon</h4>
+
+          <form onSubmit={handleSubmit}>
+            <div className='form-group'>
+              <label className='text-muted'>Name</label>
+              <input
+                type='text'
+                className='form-control'
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                autoFocus
+                required
+              />
+            </div>
+
+            <div className='form-group'>
+              <label className='text-muted'>Discount %</label>
+              <input
+                type='text'
+                className='form-control'
+                onChange={(e) => setDiscount(e.target.value)}
+                value={discount}
+                required
+              />
+            </div>
+
+            <div className='form-group'>
+              <label className='text-muted'>Expiry</label>
+              <br />
+              <DatePicker
+                className='form-control'
+                selected={new Date()}
+                value={expiry}
+                onChange={(date) => setExpiry(date)}
+                required
+              />
+            </div>
+
+            <button className='btn btn-outline-primary'>Save</button>
+          </form>
         </div>
       </div>
     </div>
