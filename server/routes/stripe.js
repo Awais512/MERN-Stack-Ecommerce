@@ -1,5 +1,5 @@
 const express = require('express');
-const { createPaymentIntent } = require('../config/stripeController');
+const { createPaymentIntent } = require('../controllers/stripeController');
 const { authCheck, adminCheck } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
