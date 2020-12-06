@@ -2,6 +2,8 @@ const User = require('../models/userModel');
 const Product = require('../models/productModel');
 const Cart = require('../models/cartModel');
 const Coupon = require('../models/couponModel');
+const Order = require('../models/orderModel');
+
 exports.userCart = async (req, res) => {
   // console.log(req.body); // {cart: []}
   const { cart } = req.body;
@@ -106,4 +108,13 @@ exports.applyCoupon = async (req, res) => {
     { new: true }
   ).exec();
   res.json(totalAfterDiscount);
+};
+
+exports.createOrder = async (req, res) => {
+  const { paymentIntent } = req.body.stripeResponse;
+  const user = await User.findOne({ email: req.user.email });
+  let { products } = await Cart.findOne({ orderdBy: user._id });
+
+  const order = await new Order({ products, paymentIntent, orderdBy }).save();
+  res.json({ ok: true });
 };
