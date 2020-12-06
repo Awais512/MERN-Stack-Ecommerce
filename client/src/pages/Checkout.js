@@ -16,7 +16,8 @@ const Checkout = ({ history }) => {
   const [address, setAddress] = useState('');
   const [addressSaved, setAddressSaved] = useState(false);
   const [coupon, setCoupon] = useState('');
-  const [discount, setDiscount] = useState(0);
+  // discount price
+  const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
   const [discountError, setDiscountError] = useState('');
 
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Checkout = ({ history }) => {
     emptyUserCart(user.token).then((res) => {
       setProducts([]);
       setTotal(0);
-      setDiscount(0);
+      setTotalAfterDiscount(0);
       setCoupon('');
       toast.success('Cart is emapty. Contniue shopping.');
     });
@@ -62,16 +63,19 @@ const Checkout = ({ history }) => {
   const applyDiscountCoupon = () => {
     console.log('send coupon to backend', coupon);
     applyCoupon(user.token, coupon).then((res) => {
-      console.log(res.data);
+      console.log('RES ON COUPON APPLIED', res.data);
       if (res.data) {
-        setDiscount(res.data);
+        setTotalAfterDiscount(res.data);
+        // update redux coupon applied true/false
         dispatch({
           type: 'COUPON_APPLIED',
           payload: true,
         });
       }
+      // error
       if (res.data.err) {
         setDiscountError(res.data.err);
+        // update redux coupon applied true/false
         dispatch({
           type: 'COUPON_APPLIED',
           payload: false,
@@ -139,8 +143,11 @@ const Checkout = ({ history }) => {
         {showProductSummary()}
         <hr />
         <p>Cart Total: {total}</p>
-        {discount > 0 && (
-          <p className='bg-success'>Discount applied. Payable ${discount}</p>
+
+        {totalAfterDiscount > 0 && (
+          <p className='bg-success p-2'>
+            Discount Applied: Total Payable: ${totalAfterDiscount}
+          </p>
         )}
 
         <div className='row'>
