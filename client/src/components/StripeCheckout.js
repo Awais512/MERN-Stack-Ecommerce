@@ -19,7 +19,6 @@ const StripeCheckout = ({ history }) => {
 
   useEffect(() => {
     createPaymentIntent(user.token, coupon).then((res) => {
-      console.log('create payment intent', res.data);
       setClientSecret(res.data.clientSecret);
     });
   }, []);
@@ -40,7 +39,6 @@ const StripeCheckout = ({ history }) => {
       setError(`Payment Failed ${payload.error.message}`);
       setProcessing(false);
     } else {
-      console.log(payload);
       setProcessing(false);
       setSucceeded(true);
     }
