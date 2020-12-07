@@ -4,6 +4,7 @@ import { getUserOrders } from '../../functions/user';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import UserOrderTable from './UserOrderTable';
+import ShowPaymentInfo from '../../components/Cards/ShowPaymentInfo';
 
 const History = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -32,7 +33,7 @@ const History = () => {
           </h4>
           {orders.map((order, i) => (
             <div key={i} className='m-5 p-3 card'>
-              <p>Show Payment Info</p>
+              <ShowPaymentInfo order={order} />
               <UserOrderTable order={order} />
               <div className='row'>
                 <div className='col'>
