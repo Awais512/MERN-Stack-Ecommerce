@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import UserNav from '../../components/nav/UserNav';
 import { getUserOrders } from '../../functions/user';
 import { useSelector } from 'react-redux';
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import UserOrderTable from './UserOrderTable';
 
