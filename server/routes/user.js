@@ -6,6 +6,7 @@ const {
   saveAddress,
   createOrder,
   applyCoupon,
+  orders,
 } = require('../controllers/userController');
 
 const { authCheck, adminCheck } = require('../middlewares/authMiddleware');
@@ -17,5 +18,6 @@ router.delete('/user/cart', authCheck, emptyCart);
 router.post('/user/address', authCheck, saveAddress);
 router.post('/user/cart/coupon', authCheck, applyCoupon);
 router.post('/user/order', authCheck, createOrder);
+router.get('/user/orders', authCheck, orders);
 
 module.exports = router;

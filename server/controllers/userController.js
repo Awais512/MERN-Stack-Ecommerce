@@ -142,3 +142,15 @@ exports.createOrder = async (req, res) => {
 
   res.json({ ok: true });
 };
+
+exports.orders = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.user.email });
+    let orders = await Order.find({ orderdBy: user._id }).populate(
+      'products.product'
+    );
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+  }
+};
