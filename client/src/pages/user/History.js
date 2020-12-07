@@ -5,15 +5,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import UserOrderTable from './UserOrderTable';
 import ShowPaymentInfo from '../../components/Cards/ShowPaymentInfo';
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  PDFDownloadLink,
-  PDFViewer,
-} from '@react-pdf/renderer';
+
 import PdfDownload from '../../components/Cards/PdfDownload';
 
 const History = () => {
