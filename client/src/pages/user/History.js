@@ -5,6 +5,16 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import UserOrderTable from './UserOrderTable';
 import ShowPaymentInfo from '../../components/Cards/ShowPaymentInfo';
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  PDFDownloadLink,
+  PDFViewer,
+} from '@react-pdf/renderer';
+import PdfDownload from '../../components/Cards/PdfDownload';
 
 const History = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -37,7 +47,7 @@ const History = () => {
               <UserOrderTable order={order} />
               <div className='row'>
                 <div className='col'>
-                  <p>PDF Download</p>
+                  <PdfDownload order={order} />
                 </div>
               </div>
             </div>
