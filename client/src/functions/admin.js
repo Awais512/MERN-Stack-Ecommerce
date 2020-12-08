@@ -17,5 +17,3 @@ export const changeStatus = async (orderId, orderStatus, authtoken) =>
       },
     }
   );
-
-//   /admin/order-status/:orderId

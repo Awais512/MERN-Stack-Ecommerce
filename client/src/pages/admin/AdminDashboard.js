@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminNav from '../../components/nav/AdminNav';
 import { getOrders, changeStatus } from '../../functions/admin';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,25 +6,27 @@ import { toast } from 'react-toastify';
 import Orders from '../../components/Orders';
 
 const AdminDashboard = () => {
-  const { user } = useSelector((state) => ({ ...state }));
   const [orders, setOrders] = useState([]);
-
-  const loadOrders = async () => {
-    const { data } = await getOrders(user.token);
-    console.log(data);
-    setOrders(data);
-  };
-
-  const handleStatusChange = (orderId, orderStatus) => {
-    changeStatus(orderId, orderStatus, user.token).then(({ data }) => {
-      toast.success('Status Updated');
-      loadOrders();
-    });
-  };
+  const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     loadOrders();
   }, []);
+
+  const loadOrders = () =>
+    getOrders(user.token).then((res) => {
+      console.log(JSON.stringify(res.data, null, 4));
+      setOrders(res.data);
+      console.log(res.data);
+    });
+
+  const handleStatusChange = (orderId, orderStatus) => {
+    changeStatus(orderId, orderStatus, user.token).then((res) => {
+      toast.success('Status updated');
+      loadOrders();
+    });
+  };
+
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -32,7 +34,7 @@ const AdminDashboard = () => {
           <AdminNav />
         </div>
 
-        <div className='col-md-10'>
+        <div className='col'>
           <h4>Admin Dashboard</h4>
           <Orders orders={orders} handleStatusChange={handleStatusChange} />
         </div>

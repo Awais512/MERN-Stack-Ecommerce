@@ -1,25 +1,24 @@
 const Order = require('../models/orderModel');
 
+//orders, orderStatus
+
 exports.orders = async (req, res) => {
-  try {
-    const orders = await Order.find({})
-      .sort('-createdAt')
-      .populate('products.product');
-    res.json(orders);
-  } catch (error) {
-    console.log(error);
-  }
+  let allOrders = await Order.find({})
+    .sort('-createdAt')
+    .populate('products.product')
+    .exec();
+
+  res.json(allOrders);
 };
+
 exports.updateOrderStatus = async (req, res) => {
   const { orderId, orderStatus } = req.body;
-  try {
-    const order = await Order.findOneAndUpdate(
-      orderId,
-      { orderStatus },
-      { new: true }
-    );
-    res.json(order);
-  } catch (error) {
-    console.log(error);
-  }
+
+  let updated = await Order.findByIdAndUpdate(
+    orderId,
+    { orderStatus },
+    { new: true }
+  ).exec();
+
+  res.json(updated);
 };

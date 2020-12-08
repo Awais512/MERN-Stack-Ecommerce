@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import ShowPaymentInfo from './Cards/ShowPaymentInfo';
+import ShowPaymentInfo from '../components/Cards/ShowPaymentInfo';
 
 const Orders = ({ orders, handleStatusChange }) => (
   <>

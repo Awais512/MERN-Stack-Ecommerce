@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const { ObjectId } = mongoose.Schema;
 
 const orderSchema = new mongoose.Schema(
@@ -19,9 +20,9 @@ const orderSchema = new mongoose.Schema(
       default: 'Not Processed',
       enum: [
         'Not Processed',
-        'Processing',
+        'processing',
         'Dispatched',
-        'Canceled',
+        'Cancelled',
         'Completed',
       ],
     },
