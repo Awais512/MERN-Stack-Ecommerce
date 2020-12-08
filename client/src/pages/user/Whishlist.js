@@ -1,5 +1,10 @@
 import React from 'react';
 import UserNav from '../../components/nav/UserNav';
+import {
+  addToWishlist,
+  getWishlist,
+  removeWishlist,
+} from '../../functions/user';
 
 const Whishlist = () => {
   return (
