@@ -122,7 +122,7 @@ const Checkout = ({ history }) => {
   );
 
   const createCashOrder = async () => {
-    const { data } = await createCOD(user.token);
+    const { data } = await createCOD(user.token, COD);
     console.log(data);
   };
 
