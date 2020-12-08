@@ -84,7 +84,7 @@ const App = () => {
 
         <UserRoute path='/user/history' exact component={History} />
         <UserRoute path='/user/password' exact component={Password} />
-        <UserRoute path='/user/whishlist' exact component={Whishlist} />
+        <UserRoute path='/user/wishlist' exact component={Whishlist} />
         <UserRoute path='/payment' exact component={Payment} />
 
         <AdminRoute path='/admin/dashboard' exact component={AdminDashboard} />

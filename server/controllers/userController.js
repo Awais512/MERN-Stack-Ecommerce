@@ -157,15 +157,13 @@ exports.orders = async (req, res) => {
 
 exports.addToWishlist = async (req, res) => {
   const { productId } = req.body;
-  try {
-    const user = await User.findOneAndUpdate(
-      { email: req.user.email },
-      { $addToSet: { wishlist: productId } }
-    );
-    res.json({ ok: true });
-  } catch (error) {
-    console.log(error);
-  }
+
+  const user = await User.findOneAndUpdate(
+    { email: req.user.email },
+    { $addToSet: { wishlist: productId } }
+  ).exec();
+
+  res.json({ ok: true });
 };
 exports.wishlist = async (req, res) => {
   const list = await User.findOne({ email: req.user.email })
