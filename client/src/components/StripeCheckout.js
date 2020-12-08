@@ -122,6 +122,7 @@ const StripeCheckout = ({ history }) => {
           cover={
             <img
               src={Laptop}
+              alt='laptop'
               style={{
                 height: '200px',
                 objectFit: 'cover',
