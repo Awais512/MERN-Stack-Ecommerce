@@ -7,6 +7,9 @@ const {
   createOrder,
   applyCoupon,
   orders,
+  addToWishlist,
+  wishlist,
+  removeFromWishlist,
 } = require('../controllers/userController');
 
 const { authCheck, adminCheck } = require('../middlewares/authMiddleware');
@@ -19,5 +22,8 @@ router.post('/user/address', authCheck, saveAddress);
 router.post('/user/cart/coupon', authCheck, applyCoupon);
 router.post('/user/order', authCheck, createOrder);
 router.get('/user/orders', authCheck, orders);
+router.post('/user/whishlist', authCheck, addToWishlist);
+router.get('/user/whishlist', authCheck, wishlist);
+router.put('/user/whishlist/:productId', authCheck, removeFromWishlist);
 
 module.exports = router;
