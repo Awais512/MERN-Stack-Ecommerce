@@ -23,6 +23,7 @@ const Checkout = ({ history }) => {
 
   const dispatch = useDispatch();
   const { user, COD } = useSelector((state) => ({ ...state }));
+  const couponTrueOrFalse = useSelector((state) => state.coupon);
 
   useEffect(() => {
     getUserCart(user.token).then((res) => {
@@ -122,8 +123,33 @@ const Checkout = ({ history }) => {
   );
 
   const createCashOrder = async () => {
-    const { data } = await createCOD(user.token, COD);
+    const { data } = await createCOD(user.token, COD, couponTrueOrFalse);
     console.log(data);
+    if (data.ok) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('cart');
+      }
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: [],
+      });
+
+      dispatch({
+        type: 'COUPON_APPLIED',
+        payload: false,
+      });
+
+      dispatch({
+        type: 'COD',
+        payload: false,
+      });
+
+      await emptyUserCart(user.token);
+
+      setTimeout(() => {
+        history.push('/user/history');
+      }, 1000);
+    }
   };
 
   return (

@@ -33,7 +33,7 @@ const History = () => {
               ? `User Purchase Order (${orders.length})`
               : 'No Purchase Orders'}
           </h4>
-          {orders.map((order, i) => (
+          {orders.reverse().map((order, i) => (
             <div key={i} className='m-5 p-3 card'>
               <ShowPaymentInfo order={order} />
               <UserOrderTable order={order} />
